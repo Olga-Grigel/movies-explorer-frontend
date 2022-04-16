@@ -1,0 +1,45 @@
+.headerauth {
+  max-width: 396px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 20px;
+}
+
+.headerauth__logo_link {
+  text-align: left;
+}
+
+.headerauth__logo {
+  width: 38px;
+  height: 38px;
+}
+
+.headerauth__logo:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 450px) {
+  .headerauth__logo {
+    margin: auto;
+  }
+}
+
+.headerauth__text {
+margin: 40px 0 0;
+font-family: 'Inter', sans-serif;
+font-style: normal;
+font-weight: 500;
+font-size: 24px;
+line-height: 29px;
+text-align: left;
+}
+
+@media screen and (max-width: 450px) {
+  .headerauth__text {
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

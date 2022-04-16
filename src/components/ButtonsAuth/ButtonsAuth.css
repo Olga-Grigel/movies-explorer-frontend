@@ -1,0 +1,52 @@
+.buttons {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+@media screen and (max-width: 450px) {
+  .buttons {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
+
+.buttons__submit {
+  background: #3456F3;
+  border-radius: 3px;
+  width: 100%;
+  height: 45px;
+  padding: 0;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.buttons__submit:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.buttons__text {
+  font-weight: 400;
+  color: #A0A0A0;
+  margin: 16px 0 0;
+}
+
+@media screen and (max-width: 450px) {
+  .buttons__text {
+    margin-top: 14px;
+  }
+}
+
+.buttons__auth {
+  margin-left: 6px;
+  text-decoration: none;
+  font-weight: 400;
+  color: #3456F3;
+}
+
+.buttons__auth:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}

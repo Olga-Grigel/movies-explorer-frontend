@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Login from '../Login/Login';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -16,12 +16,11 @@ import Menu from '../Menu/Menu';
 import Navigation from '../Navigation/Navigation';
 
 function App() {
-  const navigate = useNavigate();
 
   return (
     <div className="App">
       <Routes>
-        <Route exact path="/" element={<Menu />} />
+        <Route exact path="/" element={<Main />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/saved-movies" element={<SavedMovies />} />
         <Route path="/profile" element={<Profile />} />

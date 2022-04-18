@@ -14,14 +14,56 @@ import Preloader from '../Preloader/Preloader';
 import NotFound from '../NotFound/NotFound';
 import Menu from '../Menu/Menu';
 import Navigation from '../Navigation/Navigation';
+import api from '../../utils/MoviesApi';
 
 function App() {
+  const [calcMovies, setCalcMovies] = React.useState(0);
+  const [movies, setMovies] = React.useState([]);
+  
+
+  function handleMoviesCalc() {
+    
+    if (window.innerWidth < 449) {
+      return setCalcMovies(5);
+    }
+    else if (window.innerWidth < 949) {
+      return setCalcMovies(8);
+    }
+    return setCalcMovies(12);
+  };
+
+  function moviesList(arrayMovies) {
+    handleMoviesCalc();
+    console.log(calcMovies)
+    return arrayMovies.slice(0, calcMovies);
+  };
+
+  const handleSearch = () => {
+    
+    api.getInitialCards()
+      .then((movies) => {
+        debugger;      
+        setMovies(moviesList(movies));
+        window.addEventListener("resize", () => { setMovies(moviesList(movies)) });        
+        return () => window.removeEventListener("resize", () => { setMovies(moviesList(movies)) });
+        
+      })
+      .catch(err => alert(`Ошибка: ${err.status}`))
+  }
+
+  React.useEffect(() => {
+
+  }, []);
 
   return (
     <div className="App">
       <Routes>
         <Route exact path="/" element={<Main />} />
-        <Route path="/movies" element={<Movies />} />
+        <Route path="/movies" element={
+          <Movies
+            movies={movies}
+            handleSearch={handleSearch}
+          />} />
         <Route path="/saved-movies" element={<SavedMovies />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/signin" element={<Login />} />

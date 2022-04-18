@@ -4,12 +4,16 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 
-function Movies() {
+function Movies({ movies, handleSearch }) {
   return (
     <section className="movies">
       {<Header />}
-      {<SearchForm />}
-      {<MoviesCardList />}
+      {<SearchForm
+        handleSearch={handleSearch}
+      />}
+      {<MoviesCardList
+        movies={movies}
+      />}
       {<Footer />}
     </section>
 

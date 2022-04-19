@@ -1,5 +1,4 @@
 .auth {
-  margin-bottom: 69px;
   min-height: 266px;
 }
 
@@ -37,6 +36,10 @@
 }
 
 .auth__error {
+  display: none;
+}
+.auth__error_active {
+  display: block;
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;

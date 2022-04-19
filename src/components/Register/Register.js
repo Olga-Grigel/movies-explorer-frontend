@@ -1,10 +1,11 @@
+import React from 'react';
 import './Register.css';
 import HeaderAuth from '../HeaderAuth/HeaderAuth';
-import ButtonsAuth from '../ButtonsAuth/ButtonsAuth';
 import FormAuth from '../FormAuth/FormAuth';
 
 
-function Register() {
+function Register({ submitRegister, infoTooltip }) {
+
   return (
     <div className="register">
       <div className="register__container">
@@ -13,12 +14,14 @@ function Register() {
         />
         <FormAuth
           className={"auth__labels"}
-        />
-        <ButtonsAuth
+          submitRegister={submitRegister}
+          infoTooltip={infoTooltip}
           textButton={"Зарегистрироваться"}
+          text={"Уже зарегистрированы?"}
           textLink={"Войти"}
           link={"/signin"}
         />
+        
       </div>
     </div>
   );

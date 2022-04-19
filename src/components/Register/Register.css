@@ -74,5 +74,5 @@
 }
 
 .register__labels_off {
-  display: none;
+  visibility: hidden;
 }

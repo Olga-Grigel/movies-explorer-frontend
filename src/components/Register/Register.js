@@ -14,7 +14,7 @@ function Register({ submitRegister, infoTooltip }) {
         />
         <FormAuth
           className={"auth__labels"}
-          submitRegister={submitRegister}
+          submit={submitRegister}
           infoTooltip={infoTooltip}
           textButton={"Зарегистрироваться"}
           text={"Уже зарегистрированы?"}

@@ -184,23 +184,3 @@
 .navigation__burger_link {
   display: flex;
 }
-
-.navigation__burger {
-  width: 44px;
-  height: 44px;
-  display: none;
-}
-
-@media screen and (max-width: 950px) {
-  .navigation__burger {
-    display: block;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .navigation__burger {
-    display: block;
-    width: 40px;
-    height: 43px;
-  }
-}

@@ -1,19 +1,21 @@
 import './SearchForm.css';
-import find from '../../images/find.svg';
+
 
 function SearchForm({ handleSearch }) {
   return (
-    <form className="search" onClick={handleSearch}>
-      <div className="search__string">
-        <input id="search" type="text" name="search" className="search__input" placeholder="Фильм" />
-        <img className="search__find" src={find} alt="Значок 'найти'"  />
-      </div>
+    <section className="search">
+      <form className="search__form" onSubmit={handleSearch}>
+        <div className="search__string">
+          <input id="search" type="text" name="search" className="search__input" placeholder="Фильм" />
+          <button type="submit" className="search__find" alt="Значок 'найти'"></button>
+        </div>
+      </form>
       <label className="search__checkbox">
         <input type="checkbox" />
         <span className="search__switch"></span>
         <p className="search__text">Короткометражки</p>
       </label>
-    </form>
+    </section>
   );
 }
 

@@ -15,6 +15,13 @@ function MoviesCard(props) {
     }
   }
 
+  function handleSavedMovie() {
+    console.log('кнопку нажала, уровень 1 прошла')
+    console.log(props.movie)
+    props.onSavedMovie(props.movie);
+    
+  }
+
   return (
     <div className="element">
       <div className="element__textblock">
@@ -25,7 +32,7 @@ function MoviesCard(props) {
         </p>
       </div>
       <img className="element__photo" src={'https://api.nomoreparties.co/' + props.movie.image.url} alt="Картинка с фильма" />
-      <button type="button" className="element__button">Сохранить</button>
+      <button type="button" className="element__button" onClick={handleSavedMovie}>Сохранить</button>
     </div>
   );
 }

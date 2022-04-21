@@ -52,3 +52,7 @@
   opacity: 0.6;
   cursor: pointer;
 }
+
+.elements__button_disabled {
+  visibility: hidden;
+}

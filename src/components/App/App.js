@@ -18,6 +18,9 @@ import Navigation from '../Navigation/Navigation';
 import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 import * as auth from '../../utils/auth';
+import FormAuth from '../FormAuth/FormAuth';
+import useFormWithValidation from '../../utils/FormValidator';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
   const navigate = useNavigate()
@@ -27,11 +30,11 @@ function App() {
   const [infoTooltip, setInfoTooltip] = React.useState({ onStatus: false, title: "" });
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setcurrentUser] = React.useState({});
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   handleTokenCheck('/')
-  // }, [])
-
+  React.useEffect(() => {
+    handleTokenCheck('/')
+  }, [])
   const handleTokenCheck = (path) => {
     if (localStorage.getItem('jwt')) {
       auth
@@ -46,8 +49,41 @@ function App() {
         .catch(err => console.log(`Ошибка: ${err.status}`))
     }
   }
+  
+  function closePopups() {
+    setIsMenuOpen(false);
+  }
 
-  //запускаю подсчет карточек
+  React.useEffect(() => {
+    if (isMenuOpen) {
+      function handleEsc(event) {
+        if (event.key === 'Escape') {
+          closePopups()
+        }
+      }
+      document.addEventListener("keydown", handleEsc)
+      return () => {
+        document.removeEventListener("keydown", handleEsc)
+      }
+    }
+  }, [isMenuOpen])
+
+  function handlePopupClick(event) {
+    if (event.target === event.currentTarget) {
+      closePopups()
+    }
+  }
+
+  React.useEffect(() => {
+    mainApi.getInitialProfile()
+      .then((data) => {
+        setcurrentUser(data);
+        console.log(data)
+      })
+      .catch(err => console.log(`Ошибка: ${err.status}`))
+  }, [currentUser]);
+
+    //запускаю подсчет карточек
   React.useEffect(() => {
     handleMoviesCalc();
   }, [])
@@ -75,6 +111,7 @@ function App() {
     moviesApi.getInitialMovies()
       .then((movies) => {
         setMovies(movies);
+        console.log(movies)
         setMoviesFiltered(moviesList(movies))
         // window.addEventListener("resize", () => { setMovies(moviesList(movies)) });        
         // return () => window.removeEventListener("resize", () => { setMovies(moviesList(movies)) });
@@ -97,7 +134,8 @@ function App() {
       .then(res => {
         if (res.status !== 400) {
           setInfoTooltip({ onStatus: true, title: "Вы успешно зарегистрировались!" })
-          //setTimeout(handleTokenCheck('/'), 2000);
+          //setTimeout(handleTokenCheck('/'), 6000);
+          setTimeout(navigate('/movies'), 6000);
         } else {
           setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
         }
@@ -111,58 +149,115 @@ function App() {
     if (!data.email || !data.password) {
       return setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
     }
+    console.log(data)
+    const {email, password}=data
+    console.log({email, password})
     auth
       .signin(data)
       .then(res => {
+        console.log(res);
         if (res?.data._id) {
           localStorage.setItem('jwt', res?.data._id);
+          console.log(localStorage.getItem('jwt', res?.data._id))
           setcurrentUser(res.data);
           setLoggedIn(true);
-          //handleTokenCheck('/');
+          //setTimeout(handleTokenCheck('/'), 9000);
+          navigate('/movies');
         }
       })
       .catch(() => {
         setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
       })
   }
+  //обновление профиля(изменение данных)
+  function handleUpdateUser(data) {
+    mainApi.sendDataProfile(data)
+      .then(res => {
+        setcurrentUser(res);
+        //closeAllPopups()
+      })
+      .catch(err => console.log(`Ошибка: ${err.status}`))
+  }
+
+
+  ////В разработке эта строчка под вопросом 
+  //setMovies((prewMovies) => prewMovies.map((m) => m.id === movie.id ? newCard : m));
+
+  function handleSavedMovie(movie) {
+    // проверяем, есть ли этот фильм в нашей базе сохраненных (проверяем по id фильма и id пользователя)
+    console.log(movie)
+    //const isSaved = movie.id.some(i => i === currentUser._id);
+    // Отправляем запрос в API и сохраняем фильм в нашу базу данных
+    //if (!isSaved) {
+      mainApi.savedMovie(movie)
+      .then((movie)=>{
+        console.log(movie)
+      })
+        // .then((newCard) => {
+        //   setMovies((prewMovies) => prewMovies.map((m) => m.id === movie.id ? newCard : m));
+        // })
+        .catch(err => console.log(`Ошибка: ${err.status}`));
+    //}
+  //   mainApi.deleteMovie(movie.id)
+  //     .then((newCard) => {
+  //       setMovies((prewMovies) => prewMovies.map((m) => m.id === movie.id ? newCard : m));
+  //     })
+  //     .catch(err => console.log(`Ошибка: ${err.status}`));
+  }
+
+
   return (
-    <div className="App">
-      <Routes>
-        <Route exact path="/" element={<Main />} />
-        {/* <ProtectedRoute
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="App">
+        <Routes>
+          <Route exact path="/" element={<Main />} />
+          {/* <ProtectedRoute
           loggedIn={loggedIn}
           component={ */}
-        <Route path="/movies" element={
-          <Movies
-            movies={moviesFiltered}
-            handleSearch={handleSearch}
+          <Route path="/movies" element={
+            <Movies
+              movies={moviesFiltered}
+              handleSearch={handleSearch}
+              buttonDisabled={"on"}
+              onMenu={() => setIsMenuOpen(true)}
+              onSavedMovie={(movie)=>{handleSavedMovie(movie)}}
+            />} />
+          {/* } /> */}
+          {/* <ProtectedRoute
+          loggedIn={loggedIn}
+          component={ */}
+          <Route path="/saved-movies" element={
+            <SavedMovies
+              movies={moviesFiltered}
+              handleSearch={handleSearch}
+              buttonDisabled={"of"}
+              onMenu={() => setIsMenuOpen(true)}
+            />} />
+          {/* } /> */}
+          {/* <ProtectedRoute
+          loggedIn={loggedIn}
+          component={ */}
+          <Route path="/profile" element={<Profile
+            onUpdateUser={handleUpdateUser}
           />} />
-        {/* } /> */}
-        {/* <ProtectedRoute
-          loggedIn={loggedIn}
-          component={ */}
-        <Route path="/saved-movies" element={
-          <SavedMovies
-            movies={moviesFiltered}
-            handleSearch={handleSearch}
+          {/* } /> */}
+          <Route path="/signin" element={<Login
+            submitLogin={handleInfoTooltipSubmitLogin}
+            infoTooltip={infoTooltip}
           />} />
-        {/* } /> */}
-        {/* <ProtectedRoute
-          loggedIn={loggedIn}
-          component={ */}
-        <Route path="/profile" element={<Profile />} />
-        {/* } /> */}
-        <Route path="/signin" element={<Login
-          submitLogin={handleInfoTooltipSubmitLogin}
-          infoTooltip={infoTooltip}
-        />} />
-        <Route path="/signup" element={<Register
-          submitRegister={handleInfoTooltipSubmitRegister}
-          infoTooltip={infoTooltip}
-        />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
+          <Route path="/signup" element={<Register
+            submitRegister={handleInfoTooltipSubmitRegister}
+            infoTooltip={infoTooltip}
+          />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Menu
+          isOpen={isMenuOpen}
+          onClose={closePopups}
+          onPopupClick={handlePopupClick}
+        />
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 

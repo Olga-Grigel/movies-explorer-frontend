@@ -44,3 +44,28 @@ display: none;
     display: block;
   }
 }
+
+
+.header__navigation__button {
+  width: 44px;
+  height: 44px;
+  display: none;
+}
+
+@media screen and (max-width: 950px) {
+  .header__navigation__button {
+    display: block;
+    border: none;
+    padding: 0;
+    background-image: url(../../images/burger.svg);
+    background-color: #fff;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .header__navigation__button {
+    display: block;
+    width: 40px;
+    height: 43px;
+  }
+}

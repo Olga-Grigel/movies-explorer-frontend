@@ -1,13 +1,13 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ movies }) {
+function MoviesCardList({ movies, buttonDisabled, onSavedMovie}) {
   return (
     <section className="elements">
       <div className="elements__grid">
-        {movies.map((movie) => (<MoviesCard key={movie.id} movie={movie} />))}
+        {movies.map((movie) => (<MoviesCard key={movie.id} movie={movie} onSavedMovie={onSavedMovie} />))}
       </div>
-      <button className="elements__button">Ещё</button>
+      <button className={buttonDisabled === "on" ? 'elements__button' : 'elements__button_disabled'}>Ещё</button>
     </section>
   );
 }

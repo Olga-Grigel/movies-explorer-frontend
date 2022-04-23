@@ -105,3 +105,24 @@
   background-color: #FF3055;
   color: #fff;
 }
+
+.element__button_text {
+
+}
+
+.element__button_image_V {
+  background-image: url(../../images/V.svg);
+  width: 8px;
+  height: 5px;
+  margin: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.element__button_image_X {
+  background-image: url(../../images/X.svg);
+  width: 7px;
+  height: 7px;
+  margin: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+}

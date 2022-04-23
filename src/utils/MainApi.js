@@ -6,14 +6,14 @@ class Api {
     this._headers = config.headers;
   }
 
-  // getInitialCards() {
-  //   return fetch(this._url + '/cards', {
-  //     method: 'GET',
-  //     headers: this._headers,
-  //     credentials: 'include'
-  //   })
-  //     .then((res) => this.checkResponse(res))
-  // };
+  getSavedMovies() {
+    return fetch(this._url + '/movies', {
+      method: 'GET',
+      headers: this._headers,
+      credentials: 'include'
+    })
+    .then(res => moviesApi.checkResponse(res));
+  };
 
   getInitialProfile() {
     return fetch(this._url + '/users/me', {
@@ -21,10 +21,7 @@ class Api {
       headers: this._headers,
       credentials: 'include'
     })
-      .then((res) => {
-        console.log(res)
-        return this.checkResponse(res)
-      })
+    .then(res => moviesApi.checkResponse(res));
   };
   // sendDataProfile({ name, email }) {
   //   return fetch(this._url + '/users/me', {
@@ -40,19 +37,21 @@ class Api {
   // };
 
   savedMovie(data) {
+    console.log(data)
     return fetch(this._url + '/movies', {
       method: 'POST',
       headers: this._headers,
       credentials: 'include',
       body: JSON.stringify({
+        id: data.id,
         country: data.country,
         director: data.director,
         duration: data.duration,
         year: data.year,
         description: data.description,
-        image: "https://api.nomoreparties.co/" + data.image.url,
+        image: "https://api.nomoreparties.co" + data.image.url,
         trailerLink: data.trailerLink,
-        thumbnail: "https://api.nomoreparties.co/" + data.image.url,
+        thumbnail: "https://api.nomoreparties.co" + data.image.url,
         movieId: data.id,
         nameRU: data.nameRU,
         nameEN: data.nameEN
@@ -62,6 +61,8 @@ class Api {
   };
 
   deleteMovie(cardId) {
+    console.log(cardId)
+    console.log('я сработал')
     return fetch(`${this._url}/movies/${cardId}`, {
       method: 'DELETE',
       headers: this._headers,

@@ -27,29 +27,36 @@ function App() {
   const [calcMovies, setCalcMovies] = React.useState(0);
   const [movies, setMovies] = React.useState([]);
   const [moviesFiltered, setMoviesFiltered] = React.useState([]);
+  const [savedMovies, setSavedMovies] = React.useState([]);
   const [infoTooltip, setInfoTooltip] = React.useState({ onStatus: false, title: "" });
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setcurrentUser] = React.useState({});
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  
+
+
+  React.useEffect(() => {
+    Promise.all([mainApi.getInitialProfile(), mainApi.getSavedMovies()])
+      .then((data) => {
+        setcurrentUser(data[0]);
+        const myMovies = data[1].filter((movie) => movie.owner === localStorage.getItem('jwt'))
+        console.log(myMovies)
+        setSavedMovies(myMovies)
+      })
+      .catch(err => console.log(`Ошибка: ${err.status}`))
+  }, []);
 
   React.useEffect(() => {
     handleTokenCheck('/')
   }, [])
+
   const handleTokenCheck = (path) => {
     if (localStorage.getItem('jwt')) {
-      auth
-        .checkToken()
-        .then(res => {
-          if (res) {
-            setLoggedIn(true)
-            localStorage.setItem('email', res.email);
-            navigate(path)
-          }
-        })
-        .catch(err => console.log(`Ошибка: ${err.status}`))
+      setLoggedIn(true);
+      navigate(path);
     }
   }
-  
+
   function closePopups() {
     setIsMenuOpen(false);
   }
@@ -74,16 +81,7 @@ function App() {
     }
   }
 
-  React.useEffect(() => {
-    mainApi.getInitialProfile()
-      .then((data) => {
-        setcurrentUser(data);
-        console.log(data)
-      })
-      .catch(err => console.log(`Ошибка: ${err.status}`))
-  }, [currentUser]);
-
-    //запускаю подсчет карточек
+  //запуск подсчета карточек
   React.useEffect(() => {
     handleMoviesCalc();
   }, [])
@@ -111,7 +109,6 @@ function App() {
     moviesApi.getInitialMovies()
       .then((movies) => {
         setMovies(movies);
-        console.log(movies)
         setMoviesFiltered(moviesList(movies))
         // window.addEventListener("resize", () => { setMovies(moviesList(movies)) });        
         // return () => window.removeEventListener("resize", () => { setMovies(moviesList(movies)) });
@@ -134,8 +131,8 @@ function App() {
       .then(res => {
         if (res.status !== 400) {
           setInfoTooltip({ onStatus: true, title: "Вы успешно зарегистрировались!" })
-          //setTimeout(handleTokenCheck('/'), 6000);
-          setTimeout(navigate('/movies'), 6000);
+          setTimeout(handleTokenCheck('/movies'), 6000);
+          //setTimeout(navigate('/movies'), 6000);
         } else {
           setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
         }
@@ -149,20 +146,14 @@ function App() {
     if (!data.email || !data.password) {
       return setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
     }
-    console.log(data)
-    const {email, password}=data
-    console.log({email, password})
     auth
       .signin(data)
       .then(res => {
-        console.log(res);
         if (res?.data._id) {
           localStorage.setItem('jwt', res?.data._id);
-          console.log(localStorage.getItem('jwt', res?.data._id))
           setcurrentUser(res.data);
           setLoggedIn(true);
-          //setTimeout(handleTokenCheck('/'), 9000);
-          navigate('/movies');
+          setTimeout(handleTokenCheck('/movies'), 9000);
         }
       })
       .catch(() => {
@@ -179,32 +170,27 @@ function App() {
       .catch(err => console.log(`Ошибка: ${err.status}`))
   }
 
-
   ////В разработке эта строчка под вопросом 
   //setMovies((prewMovies) => prewMovies.map((m) => m.id === movie.id ? newCard : m));
 
   function handleSavedMovie(movie) {
-    // проверяем, есть ли этот фильм в нашей базе сохраненных (проверяем по id фильма и id пользователя)
-    console.log(movie)
-    //const isSaved = movie.id.some(i => i === currentUser._id);
-    // Отправляем запрос в API и сохраняем фильм в нашу базу данных
-    //if (!isSaved) {
-      mainApi.savedMovie(movie)
-      .then((movie)=>{
-        console.log(movie)
-      })
-        // .then((newCard) => {
-        //   setMovies((prewMovies) => prewMovies.map((m) => m.id === movie.id ? newCard : m));
-        // })
-        .catch(err => console.log(`Ошибка: ${err.status}`));
-    //}
-  //   mainApi.deleteMovie(movie.id)
-  //     .then((newCard) => {
-  //       setMovies((prewMovies) => prewMovies.map((m) => m.id === movie.id ? newCard : m));
-  //     })
-  //     .catch(err => console.log(`Ошибка: ${err.status}`));
+        //Нужно доработать сохранение карточки (пока работает не корректно)
+    mainApi.savedMovie(movie) 
+    .then((newSavedMovie) => {
+      setSavedMovies([newSavedMovie, ...savedMovies])
+    })
+    .catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
+  function handleDeleteMovie(movieId) {
+    //Нужно доработать удаление карточки (пока работает не корректно)
+    // mainApi.deleteMovie(movieId)
+    //   .then(() => {
+    //     setSavedMovies((prewSavedMovies) => prewSavedMovies.filter((m) => m.id !== movieId));
+    //     console.log(SavedMovies)
+    //   })
+    //   .catch(err => console.log(`Ошибка: ${err.status}`));
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -216,11 +202,14 @@ function App() {
           component={ */}
           <Route path="/movies" element={
             <Movies
+              savedMovies={savedMovies}
               movies={moviesFiltered}
               handleSearch={handleSearch}
               buttonDisabled={"on"}
               onMenu={() => setIsMenuOpen(true)}
-              onSavedMovie={(movie)=>{handleSavedMovie(movie)}}
+              handleSavedMovie={(movie) => { handleSavedMovie(movie) }}
+              handleDeleteMovie={(movie) => { handleDeleteMovie(movie) }}
+              currentUser={currentUser}
             />} />
           {/* } /> */}
           {/* <ProtectedRoute
@@ -228,10 +217,15 @@ function App() {
           component={ */}
           <Route path="/saved-movies" element={
             <SavedMovies
-              movies={moviesFiltered}
+              movies={savedMovies}
               handleSearch={handleSearch}
               buttonDisabled={"of"}
               onMenu={() => setIsMenuOpen(true)}
+              handleSavedMovie={(movie) => { handleSavedMovie(movie) }}
+              handleDeleteMovie={(movie) => { handleDeleteMovie(movie) }}
+              currentUser={currentUser}
+              selector={"element__button"}
+
             />} />
           {/* } /> */}
           {/* <ProtectedRoute

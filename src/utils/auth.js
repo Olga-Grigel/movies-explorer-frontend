@@ -12,13 +12,10 @@ export const signup = ({ name, email, password }) => {
     },
     body: JSON.stringify({ name, email, password })
   })
-  .then(res => {
-    console.log(res)
-    return moviesApi.checkResponse(res)});
+    .then(res => moviesApi.checkResponse(res));
 };
 
-export const signin = ({email, password}) => {
-  console.log({email, password})
+export const signin = ({ email, password }) => {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     credentials: 'include',
@@ -28,11 +25,8 @@ export const signin = ({email, password}) => {
     },
     body: JSON.stringify({ email, password })
   })
-    .then(res => {
-      console.log(res)
-      return moviesApi.checkResponse(res)})
+    .then(res => moviesApi.checkResponse(res))
     .then(data => {
-      console.log(data)
       return data;
     });
 };
@@ -58,7 +52,5 @@ export const checkToken = token => {
       'Content-Type': 'application/json',
     }
   })
-  .then(res => {
-    console.log(res)
-    return moviesApi.checkResponse(res)});
+  .then(res => moviesApi.checkResponse(res));
 };

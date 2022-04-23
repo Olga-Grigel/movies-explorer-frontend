@@ -1,9 +1,20 @@
-import React from 'react';
-import pic from '../../images/pic.png';
+import React, { Children } from 'react';
 import './MoviesCard.css';
+import markV from "../../images/V.svg"
+import markX from "../../images/X.svg"
+
 
 function MoviesCard(props) {
+  // const isSaved = props.savedMovies.some((movie) => movie.owner === props.currentUser._id) || (props.movie.owner === props.currentUser._id);
 
+  // function handleClick() {
+  //   if (!isSaved) {
+  //     props.handleSavedMovie(props.movie)
+  //   }
+  //   const savedMovi = props.savedMovies.filter((m) => m.id = props.movie.id)
+  //   props.handleDeleteMovie(savedMovi)
+  // }
+  
   function durationMovie(min) {
     if (min > 59) {
       const hours = Math.trunc(min / 60);
@@ -15,13 +26,11 @@ function MoviesCard(props) {
     }
   }
 
-  function handleSavedMovie() {
-    console.log('кнопку нажала, уровень 1 прошла')
-    console.log(props.movie)
-    props.onSavedMovie(props.movie);
-    
+  function handleClickButtonSave() {
+    props.clickButtonSave(props.movie);
   }
-
+  
+  //пока плохо работает
   return (
     <div className="element">
       <div className="element__textblock">
@@ -31,8 +40,8 @@ function MoviesCard(props) {
         }
         </p>
       </div>
-      <img className="element__photo" src={'https://api.nomoreparties.co/' + props.movie.image.url} alt="Картинка с фильма" />
-      <button type="button" className="element__button" onClick={handleSavedMovie}>Сохранить</button>
+      <img className="element__photo" src={props.foto} alt="Картинка с фильма" />
+      <button type="button" className={props.selectorButton} onClick={handleClickButtonSave}><div className={props.selectorText}>{props.textButton}</div></button>
     </div>
   );
 }

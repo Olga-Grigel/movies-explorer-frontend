@@ -1,5 +1,8 @@
 .auth {
-  min-height: 266px;
+  min-height: 483px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 @media screen and (max-width: 450px) {

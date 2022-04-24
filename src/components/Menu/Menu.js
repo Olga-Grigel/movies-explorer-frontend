@@ -7,6 +7,7 @@ function Menu({isOpen, onClose, onPopupClick}) {
     <section className={`menu ${isOpen ? 'menu_opened' : ''}`} onClick={onPopupClick}>
       <button type="button" className='menu__close' onClick={onClose}></button>
       <Navigation
+      onClose={onClose}
       />
     </section>
   );

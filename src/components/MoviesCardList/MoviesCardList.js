@@ -1,7 +1,7 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ movies, buttonDisabled, handleDeleteMovie, clickButtonSave, savedMovies, currentUser, selectorButton, textButton, selectorText }) {
+function MoviesCardList({ movies, buttonDisabled, handleDeleteMovie, handleSavedMovie, savedMovies, currentUser, selectorButton, textButton, selectorText }) {
 
   function cleanUrlImage(m) {
     if (typeof m.image === 'object') {
@@ -15,10 +15,11 @@ function MoviesCardList({ movies, buttonDisabled, handleDeleteMovie, clickButton
         {movies.map((movie) => (
           <MoviesCard
             key={movie.id}
+            id={movie.id}
             movie={movie}
             foto={cleanUrlImage(movie)}
             handleDeleteMovie={handleDeleteMovie}
-            clickButtonSave={clickButtonSave}
+            handleSavedMovie={handleSavedMovie}
             savedMovies={savedMovies}
             currentUser={currentUser}
             selectorButton={selectorButton}

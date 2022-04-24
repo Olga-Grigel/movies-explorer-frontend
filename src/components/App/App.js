@@ -32,15 +32,17 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setcurrentUser] = React.useState({});
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  
 
+
+  // React.useEffect(() => {
+  //   savedMovies.forEach((movie)=>mainApi.deleteMovie(movie._id))
+  // }, []);
 
   React.useEffect(() => {
     Promise.all([mainApi.getInitialProfile(), mainApi.getSavedMovies()])
       .then((data) => {
         setcurrentUser(data[0]);
         const myMovies = data[1].filter((movie) => movie.owner === localStorage.getItem('jwt'))
-        console.log(myMovies)
         setSavedMovies(myMovies)
       })
       .catch(err => console.log(`Ошибка: ${err.status}`))
@@ -174,22 +176,21 @@ function App() {
   //setMovies((prewMovies) => prewMovies.map((m) => m.id === movie.id ? newCard : m));
 
   function handleSavedMovie(movie) {
-        //Нужно доработать сохранение карточки (пока работает не корректно)
-    mainApi.savedMovie(movie) 
-    .then((newSavedMovie) => {
-      setSavedMovies([newSavedMovie, ...savedMovies])
-    })
-    .catch(err => console.log(`Ошибка: ${err.status}`));
+
+    //Нужно доработать сохранение карточки (пока работает не корректно)
+    mainApi.savedMovie(movie)
+      .then((newSavedMovie) => {
+        setSavedMovies([newSavedMovie, ...savedMovies])
+      })
+      .catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
   function handleDeleteMovie(movieId) {
-    //Нужно доработать удаление карточки (пока работает не корректно)
-    // mainApi.deleteMovie(movieId)
-    //   .then(() => {
-    //     setSavedMovies((prewSavedMovies) => prewSavedMovies.filter((m) => m.id !== movieId));
-    //     console.log(SavedMovies)
-    //   })
-    //   .catch(err => console.log(`Ошибка: ${err.status}`));
+    mainApi.deleteMovie(movieId)
+      .then(() => {
+        setSavedMovies((prewSavedMovies) => prewSavedMovies.filter((m) => m._id !== movieId));
+      })
+      .catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
   return (
@@ -207,8 +208,8 @@ function App() {
               handleSearch={handleSearch}
               buttonDisabled={"on"}
               onMenu={() => setIsMenuOpen(true)}
-              handleSavedMovie={(movie) => { handleSavedMovie(movie) }}
-              handleDeleteMovie={(movie) => { handleDeleteMovie(movie) }}
+              handleSavedMovie={handleSavedMovie}
+              handleDeleteMovie={handleDeleteMovie}
               currentUser={currentUser}
             />} />
           {/* } /> */}
@@ -218,14 +219,14 @@ function App() {
           <Route path="/saved-movies" element={
             <SavedMovies
               movies={savedMovies}
+              savedMovies={savedMovies}
               handleSearch={handleSearch}
               buttonDisabled={"of"}
               onMenu={() => setIsMenuOpen(true)}
-              handleSavedMovie={(movie) => { handleSavedMovie(movie) }}
-              handleDeleteMovie={(movie) => { handleDeleteMovie(movie) }}
+              handleSavedMovie={handleSavedMovie}
+              handleDeleteMovie={handleDeleteMovie}
               currentUser={currentUser}
               selector={"element__button"}
-
             />} />
           {/* } /> */}
           {/* <ProtectedRoute

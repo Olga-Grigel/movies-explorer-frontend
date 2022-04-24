@@ -37,7 +37,6 @@ class Api {
   // };
 
   savedMovie(data) {
-    console.log(data)
     return fetch(this._url + '/movies', {
       method: 'POST',
       headers: this._headers,
@@ -61,8 +60,6 @@ class Api {
   };
 
   deleteMovie(cardId) {
-    console.log(cardId)
-    console.log('я сработал')
     return fetch(`${this._url}/movies/${cardId}`, {
       method: 'DELETE',
       headers: this._headers,

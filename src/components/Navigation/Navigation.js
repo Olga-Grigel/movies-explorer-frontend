@@ -2,7 +2,7 @@ import './Navigation.css';
 import { Link } from 'react-router-dom';
 import imageAccount from '../../images/account.svg';
 
-function Navigation({onClose}) {
+function Navigation({ onClose }) {
   return (
     <ul className="navigation">
       <li className="navigation__block">
@@ -12,7 +12,7 @@ function Navigation({onClose}) {
           <li className="navigation__list"><Link to='/saved-movies' className="navigation__link navigation__link_saved" onClick={onClose}>{'Сохраненные фильмы'}</Link></li>
         </ul>
       </li>
-      <li className="navigation__block"><Link to='/profile' className="navigation__link navigation__link navigation__link_account" >{'Аккаунт'}<div className="navigation__account"><img className="navigation__icon" src={imageAccount} alt="Значок аккаунта" /></div></Link></li>
+      <li className="navigation__block"><Link to='/profile' className="navigation__link navigation__link navigation__link_account" onClick={onClose}>{'Аккаунт'}<div className="navigation__account"><img className="navigation__icon" src={imageAccount} alt="Значок аккаунта" /></div></Link></li>
     </ul >
   );
 }

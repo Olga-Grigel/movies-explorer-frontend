@@ -23,18 +23,18 @@ class Api {
     })
     .then(res => moviesApi.checkResponse(res));
   };
-  // sendDataProfile({ name, email }) {
-  //   return fetch(this._url + '/users/me', {
-  //     method: 'PATCH',
-  //     headers: this._headers,
-  //     credentials: 'include',
-  //     body: JSON.stringify({
-  //       name: name,
-  //       email: email
-  //     })
-  //   })
-  //     .then((res) => this.checkResponse(res))
-  // };
+  sendDataProfile({ name, email }) {
+    return fetch(this._url + '/users/me', {
+      method: 'PATCH',
+      headers: this._headers,
+      credentials: 'include',
+      body: JSON.stringify({
+        name: name,
+        email: email
+      })
+    })
+    .then(res => moviesApi.checkResponse(res));
+  };
 
   savedMovie(data) {
     return fetch(this._url + '/movies', {

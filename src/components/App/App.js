@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-//import ProtectedRoute from '../ProtectedRoute';
+import ProtectedRoute from '../ProtectedRoute';
 import Login from '../Login/Login';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -49,7 +49,7 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    handleTokenCheck('/')
+    handleTokenCheck('/movies')
   }, [])
 
   const handleTokenCheck = (path) => {
@@ -131,10 +131,12 @@ function App() {
     auth
       .signup(data)
       .then(res => {
-        if (res.status !== 400) {
-          setInfoTooltip({ onStatus: true, title: "Вы успешно зарегистрировались!" })
-          setTimeout(handleTokenCheck('/movies'), 6000);
-          //setTimeout(navigate('/movies'), 6000);
+        if (res.status !== 400) {          
+          localStorage.setItem('jwt', res._id);
+          setcurrentUser(res);
+          setLoggedIn(true);
+          navigate('/movies');
+          setInfoTooltip({ onStatus: false})
         } else {
           setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
         }
@@ -155,7 +157,8 @@ function App() {
           localStorage.setItem('jwt', res?.data._id);
           setcurrentUser(res.data);
           setLoggedIn(true);
-          setTimeout(handleTokenCheck('/movies'), 9000);
+          navigate('/movies');
+          setInfoTooltip({ onStatus: false})
         }
       })
       .catch(() => {
@@ -164,6 +167,7 @@ function App() {
   }
   //обновление профиля(изменение данных)
   function handleUpdateUser(data) {
+    console.log(data)
     mainApi.sendDataProfile(data)
       .then(res => {
         setcurrentUser(res);
@@ -193,49 +197,63 @@ function App() {
       .catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
+  const handleLogout = (event) => {
+    auth
+      .signout()
+      .then(res => {
+        event.preventDefault()
+        localStorage.removeItem('jwt')
+        setLoggedIn(false)
+        navigate('/')
+      })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <Routes>
           <Route exact path="/" element={<Main />} />
-          {/* <ProtectedRoute
-          loggedIn={loggedIn}
-          component={ */}
           <Route path="/movies" element={
-            <Movies
-              savedMovies={savedMovies}
-              movies={moviesFiltered}
-              handleSearch={handleSearch}
-              buttonDisabled={"on"}
-              onMenu={() => setIsMenuOpen(true)}
-              handleSavedMovie={handleSavedMovie}
-              handleDeleteMovie={handleDeleteMovie}
-              currentUser={currentUser}
-            />} />
-          {/* } /> */}
-          {/* <ProtectedRoute
-          loggedIn={loggedIn}
-          component={ */}
+            <ProtectedRoute
+              loggedIn={loggedIn}
+              component={
+                <Movies
+                  savedMovies={savedMovies}
+                  movies={moviesFiltered}
+                  handleSearch={handleSearch}
+                  buttonDisabled={"on"}
+                  onMenu={() => setIsMenuOpen(true)}
+                  handleSavedMovie={handleSavedMovie}
+                  handleDeleteMovie={handleDeleteMovie}
+                  currentUser={currentUser}
+                />} />
+          } />
           <Route path="/saved-movies" element={
-            <SavedMovies
-              movies={savedMovies}
-              savedMovies={savedMovies}
-              handleSearch={handleSearch}
-              buttonDisabled={"of"}
-              onMenu={() => setIsMenuOpen(true)}
-              handleSavedMovie={handleSavedMovie}
-              handleDeleteMovie={handleDeleteMovie}
-              currentUser={currentUser}
-              selector={"element__button"}
-            />} />
-          {/* } /> */}
-          {/* <ProtectedRoute
-          loggedIn={loggedIn}
-          component={ */}
-          <Route path="/profile" element={<Profile
-            onUpdateUser={handleUpdateUser}
-          />} />
-          {/* } /> */}
+            <ProtectedRoute
+              loggedIn={loggedIn}
+              component={
+                <SavedMovies
+                  movies={savedMovies}
+                  savedMovies={savedMovies}
+                  handleSearch={handleSearch}
+                  buttonDisabled={"of"}
+                  onMenu={() => setIsMenuOpen(true)}
+                  handleSavedMovie={handleSavedMovie}
+                  handleDeleteMovie={handleDeleteMovie}
+                  currentUser={currentUser}
+                  selector={"element__button"}
+                />} />
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute
+              loggedIn={loggedIn}
+              component={
+                <Profile
+                  onUpdateUser={handleUpdateUser}
+                  onMenu={() => setIsMenuOpen(true)}
+                  handleLogout={handleLogout}
+                />} />
+          } />
           <Route path="/signin" element={<Login
             submitLogin={handleInfoTooltipSubmitLogin}
             infoTooltip={infoTooltip}

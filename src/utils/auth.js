@@ -32,16 +32,16 @@ export const signin = ({ email, password }) => {
 };
 
 //выход
-// export const signout = () => {
-//   return fetch(`${BASE_URL}/signout`, {
-//     method: 'POST',
-//     credentials: 'include',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//   })
-// };
+export const signout = () => {
+  return fetch(`${BASE_URL}/signout`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  })
+};
 
 export const checkToken = token => {
   return fetch(`${BASE_URL}/users/me`, {

@@ -37,8 +37,8 @@ function FormAuth({ className, submit, infoTooltip, textButton, textLink, link, 
           <input id="password" type="password" name="password" className="auth__input" autoComplete="off" value={values.password} onChange={handleChange} />
         </label>
       </div>
-      {/* <p className={infoTooltip.onStatus === 'true' ? 'auth__error auth__error_active' : 'auth__error'}>{infoTooltip.title}</p> */}
-      <p className='auth__error_active'>Что-то пошло не так...</p>
+      <p className={infoTooltip.onStatus ? 'auth__error auth__error_active' : 'auth__error'}>{infoTooltip.title}</p>
+      {/* <p className='auth__error_active'>Что-то пошло не так...</p> */}
       <ButtonsAuth textButton={textButton} textLink={textLink} link={link} text={text} />
     </form >
   );

@@ -1,0 +1,14 @@
+.savedmovies {
+  display: flex;
+  flex-direction: column;
+}
+
+.savedmovies__cards {
+  margin-bottom: 56px;
+}
+
+@media screen and (max-width: 950px) {
+  .savedmovies__cards {
+    margin-bottom: -26px;
+  }
+}

@@ -1,0 +1,188 @@
+.student {
+  padding: 110px 70px 100px;
+}
+
+@media screen and (max-width: 950px) {
+  .student {
+    padding: 90px 50px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .student {
+    padding: 70px 14px 69px;
+  }
+}
+
+.student__content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 66px;
+}
+
+@media screen and (max-width: 650px) {
+  .student__content {
+    flex-direction: column-reverse;
+    margin-top: 0;
+  }
+}
+
+.student__resume {
+  width: calc(100% - 270px);
+}
+
+@media screen and (max-width: 650px) {
+  .student__resume {
+    width: 100%;
+  }
+}
+
+.student__name {
+  text-align: start;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+@media screen and (max-width: 950px) {
+  .student__name {
+    font-size: 40px;
+    line-height: 40px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .student__name {
+    font-size: 30px;
+    line-height: 36px;
+  }
+}
+
+.student__about {
+  text-align: start;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  mix-blend-mode: normal;
+  margin: 18px 0 26px;
+  max-width: 600px;
+}
+
+@media screen and (max-width: 950px) {
+  .student__about {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .student__about {
+    font-size: 11px;
+    line-height: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.student__caption {
+  text-align: start;
+  max-width: 600px;
+  margin: 0 49px 0 0;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+@media screen and (max-width: 950px) {
+  .student__caption {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .student__caption {
+    font-size: 11px;
+    line-height: 16px;
+    margin-right: 0;
+  }
+}
+
+.student__links {
+  padding: 0;
+  display: flex;
+  margin: 55px 0 0;
+}
+
+@media screen and (max-width: 950px) {
+  .student__links {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .student__links {
+    margin-top: 8px;
+  }
+}
+
+.student__link {
+  list-style: none;
+  margin-right: 20px; 
+}
+
+.student__link:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 650px) {
+  .student__link {
+    margin-right: 26px;
+  }
+}
+
+.student__text {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration: none;
+  color: #000;
+}
+
+.student__foto {
+  background-image: url(../../images/fotoOlga.png);
+  height: 327px;
+  width: 270px;
+  border-radius: 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-size: cover;
+}
+
+@media screen and (max-width: 950px) {
+  .student__foto {
+    height: 307px;
+    width: 255px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .student__foto {
+    height: 352px;
+    width: 292px;
+    margin: 60px auto 40px;
+
+  }
+}

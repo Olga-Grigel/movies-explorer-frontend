@@ -1,0 +1,149 @@
+.profile {
+  margin-top: 74px;
+}
+
+@media screen and (max-width: 950px) {
+  .profile {
+    margin-top: 236px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .profile {
+    margin-top: 70px;
+  }
+}
+
+.profile__container {
+  max-width: 410px;
+  width: 100%;
+  margin: auto;
+  box-sizing: border-box;
+  text-align: center
+}
+
+@media screen and (max-width: 450px) {
+  .profile__container {
+    max-width: 260px;
+  }
+}
+
+.profile__title {
+  margin: 0 0 123px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+@media screen and (max-width: 950px) {
+  .profile__title {
+    margin-bottom: 96px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .profile__title {
+    margin-bottom: 80px;
+  }
+}
+
+.profile__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__labels {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  margin-bottom: 17px;
+  width: 100%;
+}
+
+.profile__labels_name {
+  border-bottom: 2px solid #E8E8E8;
+}
+
+.profile__label {
+  display: inline-block;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  width: 70px;
+  text-align: left;
+}
+
+.profile__input {
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: right;
+  width: calc(100% - 70px);
+}
+
+.profile__name {}
+
+.profile__submit {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  padding: 0;
+  border: none;
+  background-color: #fff;
+  margin: 185px 0 15px;
+}
+
+.profile__submit:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 950px) {
+  .profile__submit {
+    margin-top: 175px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .profile__submit {
+    margin-top: 342px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
+
+.profile__text {
+  margin: 0 0 70px;
+}
+
+.profile__signout {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: #FF3055;
+  text-decoration: none;
+}
+
+.profile__signout:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 450px) {
+  .profile__signout {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

@@ -1,0 +1,148 @@
+.colorlanding {
+  background-color: #073042;
+  width: 100%;
+}
+
+.colorlanding__title {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 18px;
+  margin: 0 70px;
+  height: 56px;
+}
+
+@media screen and (max-width: 950px) {
+  .colorlanding__title {
+    margin-left: 29px;
+    margin-right: 29px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .colorlanding__title {
+    margin-right: 14px;
+    margin-left: 14px;
+  }
+}
+
+.colorlanding__logo {
+  height: 38px;
+  width: 38px;
+}
+
+.colorlanding__auth {
+  display: flex;
+  align-items: baseline;
+  margin-top: 3px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@media screen and (max-width: 350px) {
+  .colorlanding__auth {
+    margin-top: 6px;
+    font-size: 10px;
+  }
+}
+
+.colorlanding__signup {
+  text-align: right;
+  color: #fff;
+  margin-right: 30px;
+  text-decoration: none;
+}
+.colorlanding__signup:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 350px) {
+  .colorlanding__signup {
+    margin-right: 14px;
+  }
+}
+
+.colorlanding__button {
+  height: 32px;
+  width: 76px;
+  background-color: #2BE080;
+  border-radius: 3px;
+  border: none;
+  text-decoration: none;
+  display: flex;
+}
+
+.colorlanding__button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 350px) {
+  .colorlanding__button {
+    height: 26px;
+    width: 54px;
+  }
+}
+
+.colorlanding__buttontext {
+  color: #000;
+  margin: auto;
+}
+
+.colorlanding__content {
+  background-image: url(../../images/landing-image.svg);
+  background-position: top 82px right 50%;
+  background-repeat: no-repeat;
+  background-size: 320px 320px;
+  height: 524px;
+  background-color: #073042;
+  padding: 0 10px;
+}
+
+@media screen and (max-width: 950px) {
+  .colorlanding__content {
+    background-position: top 224px right 50%;
+    height: 784px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .colorlanding__content {
+    background-position: top 142px right 50%;
+    background-size: 248px 248px;
+    height: 570px;
+  }
+}
+
+.colorlanding__text {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  letter-spacing: -0.04em;
+  color: #fff;
+  margin: 0 auto;
+  max-width: 730px;
+  text-align: center;
+  padding-top: 184px;
+}
+
+@media screen and (max-width: 950px) {
+  .colorlanding__text {
+    padding-top: 326px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .colorlanding__text {
+    padding-top: 207px;
+    font-size: 31px;
+    line-height: 39px;
+    letter-spacing: -0.04em;
+    max-width: 300px;
+  }
+}

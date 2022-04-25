@@ -1,0 +1,145 @@
+.technology {
+  padding: 100px 70px;
+  background: #F5F5F5;
+}
+
+@media screen and (max-width: 950px) {
+  .technology {
+    padding: 90px 50px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .technology {
+    padding: 70px 18px;
+    background: #fff;
+  }
+}
+
+.technology__content {
+  padding-top: 90px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 950px) {
+  .technology__content {
+    padding-top: 80px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .technology__content {
+    padding-top: 60px;
+  }
+}
+
+.technology__text {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  max-width: 100%;
+  margin: 0;
+}
+
+@media screen and (max-width: 450px) {
+  .technology__text {
+    font-size: 30px;
+    line-height: 36px;
+  }
+}
+
+.technology__caption {
+  max-width: 460px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  margin: 25px auto 100px;
+  display: inline-block;
+}
+
+@media screen and (max-width: 950px) {
+  .technology__caption {
+    margin-top: 22px;
+    margin-bottom: 83px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .technology__caption {
+    font-size: 11px;
+    line-height: 16px;
+    margin-top: 24px;
+    margin-bottom: 50px;
+  }
+}
+
+.technology__icons {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 750px) {
+  .technology__icons {
+    display: grid;
+    grid-template-columns: repeat(3, 84px);
+    column-gap: 10px;
+    row-gap: 10px;
+    justify-items: center;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .technology__icons {
+    grid-template-columns: repeat(2, 84px);
+  }
+}
+
+.technology__icon {
+  list-style: none;
+  background: #E8E8E8;
+  border-radius: 10px;
+  height: 60px;
+  width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: -0.04em;
+}
+
+.technology__icon:last-child {
+  margin-right: 0;
+}
+
+@media screen and (max-width: 950px) {
+  .technology__icon {
+    font-size: 12px;
+    line-height: 15px;
+    height: 57px;
+    width: 84px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .technology__icon {
+    margin-right: 0;
+  }
+}

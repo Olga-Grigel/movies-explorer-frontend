@@ -1,44 +1,34 @@
 import './FormAuth.css';
 import React from 'react';
 import ButtonsAuth from '../ButtonsAuth/ButtonsAuth';
+import useFormWithValidation from '../../utils/FormValidator';
 
 function FormAuth({ className, submit, infoTooltip, textButton, textLink, link, text }) {
-
-
-  const [values, setValues] = React.useState({
-    name: '',
-    email: '',
-    password: ''
-  })
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setValues(v => ({
-      ...v,
-      [name]: value,
-    }))
-  }
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation()
 
   const handleSubmit = (e) => {
     e.preventDefault();
     submit({ name: values.name, email: values.email, password: values.password });
+    resetForm()
   }
 
   return (
     <form className="auth" name="auth" onSubmit={handleSubmit}>
       <div className="auth__inputs">
         <label className={className}><p className="auth__label">Имя</p>
-          <input id="name" type="text" name="name" className="auth__input" autoComplete="off" value={values.name} onChange={handleChange} />
+          <input id="name" type="text" name="name" className="auth__input" value={values.name||""} onChange={handleChange} />
+          <span className={(isValid)?"auth__error_input":"auth__error_input_active"}>{errors.name}</span>
         </label>
         <label className="auth__labels"><p className="auth__label">E-mail</p>
-          <input id="email" type="email" name="email" className="auth__input auth__input_email" autoComplete="off" value={values.email} onChange={handleChange} />
+          <input id="email" type="email" name="email" className="auth__input auth__input_email" required value={values.email||""} onChange={handleChange} />
+          <span className={(isValid)?"auth__error_input":"auth__error_input_active"}>{errors.email}</span>
         </label>
         <label className="auth__labels"><p className="auth__label">Пароль</p>
-          <input id="password" type="password" name="password" className="auth__input" autoComplete="off" value={values.password} onChange={handleChange} />
+          <input id="password" type="password" name="password" className="auth__input" required value={values.password||""} onChange={handleChange} />
+          <span className={(isValid)?"auth__error_input":"auth__error_input_active"}>{errors.password}</span>
         </label>
       </div>
       <p className={infoTooltip.onStatus ? 'auth__error auth__error_active' : 'auth__error'}>{infoTooltip.title}</p>
-      {/* <p className='auth__error_active'>Что-то пошло не так...</p> */}
       <ButtonsAuth textButton={textButton} textLink={textLink} link={link} text={text} />
     </form >
   );

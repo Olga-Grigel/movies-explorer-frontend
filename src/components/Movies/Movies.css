@@ -2,3 +2,22 @@
   display: flex;
   flex-direction: column;
 }
+
+.movies_error_active {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 12px;
+  color: red;
+  margin: 0 70px 0;
+  padding: 22px 0 70px;
+  text-align: center;
+}
+.movies_error_disable {
+  display: none;
+}
+
+.movies_list_disable {
+  display: none;
+}

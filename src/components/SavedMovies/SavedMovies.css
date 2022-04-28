@@ -3,12 +3,19 @@
   flex-direction: column;
 }
 
-.savedmovies__cards {
+.savedmovies__cards_active {
   margin-bottom: 56px;
 }
 
 @media screen and (max-width: 950px) {
-  .savedmovies__cards {
+  .savedmovies__cards_active {
     margin-bottom: -26px;
   }
+}
+.savedmovies__cards_disable {
+  display: none;
+}
+
+.savedmovies__preloader_disable {
+  display: none;
 }

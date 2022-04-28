@@ -60,6 +60,7 @@
   padding-bottom: 16px;
   margin-bottom: 17px;
   width: 100%;
+  position: relative;
 }
 
 .profile__labels_name {
@@ -87,6 +88,11 @@
   line-height: 13px;
   text-align: right;
   width: calc(100% - 70px);
+  height: 30px;
+}
+
+.profile__input:focus {
+  outline-color:#2BE080;
 }
 
 .profile__name {}
@@ -146,4 +152,23 @@
     font-size: 12px;
     line-height: 15px;
   }
+}
+
+.profile__error {
+  opacity: 0;
+  display: none;
+}
+
+.profile__error_active {
+  opacity: 1;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 9px;
+  line-height: 10px;
+  color: #FF0000;
+  transition: opacity 0.3s;
+  position: absolute;
+  top: 35px;
+  left: 0;
 }

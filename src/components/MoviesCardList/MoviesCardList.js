@@ -8,7 +8,6 @@ function MoviesCardList({ movies, buttonDisabled, handleDeleteMovie, handleSaved
       return "https://api.nomoreparties.co" + m.image.url
     } return m.image
   }
-
   return (
     <section className="elements">
       <div className="elements__grid">

@@ -3,9 +3,8 @@ import './Register.css';
 import HeaderAuth from '../HeaderAuth/HeaderAuth';
 import FormAuth from '../FormAuth/FormAuth';
 
-
 function Register({ submitRegister, infoTooltip }) {
-
+  
   return (
     <div className="register">
       <div className="register__container">

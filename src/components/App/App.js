@@ -8,18 +8,11 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
-import HeaderAuth from '../HeaderAuth/HeaderAuth';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCard from '../MoviesCard/MoviesCard';
-import Preloader from '../Preloader/Preloader';
 import NotFound from '../NotFound/NotFound';
 import Menu from '../Menu/Menu';
-import Navigation from '../Navigation/Navigation';
 import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 import * as auth from '../../utils/auth';
-import FormAuth from '../FormAuth/FormAuth';
-import useFormWithValidation from '../../utils/FormValidator';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
@@ -28,29 +21,17 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [moviesFiltered, setMoviesFiltered] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
+  const [moviesFilteredByWordAndChekbox, setMoviesFilteredByWordAndChekbox] = React.useState([]);
+  const [moviesFilteredSaved, setMoviesFilteredSaved] = React.useState([]);
   const [infoTooltip, setInfoTooltip] = React.useState({ onStatus: false, title: "" });
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setcurrentUser] = React.useState({});
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-
-  // React.useEffect(() => {
-  //   savedMovies.forEach((movie)=>mainApi.deleteMovie(movie._id))
-  // }, []);
-
-  React.useEffect(() => {
-    Promise.all([mainApi.getInitialProfile(), mainApi.getSavedMovies()])
-      .then((data) => {
-        setcurrentUser(data[0]);
-        const myMovies = data[1].filter((movie) => movie.owner === localStorage.getItem('jwt'))
-        setSavedMovies(myMovies)
-      })
-      .catch(err => console.log(`Ошибка: ${err.status}`))
-  }, []);
-
-  React.useEffect(() => {
-    handleTokenCheck('/movies')
-  }, [])
+  const [clickSearch, setClickSearch] = React.useState(false);
+  const [invalidSearch, setInvalidSearch] = React.useState({ onStatus: false, title: "" });
+  const [invalidSearchSavedMovies, setInvalidSearchSavedMovies] = React.useState({ onStatus: false, title: "" });
+  const [onPreloader, setOnPreloader] = React.useState(false);
+  const [inactiveButtonMore, setInactiveButtonMore] = React.useState(true);
 
   const handleTokenCheck = (path) => {
     if (localStorage.getItem('jwt')) {
@@ -63,6 +44,30 @@ function App() {
     setIsMenuOpen(false);
   }
 
+  //получаем данные профиля и свои сохраненные фильмы
+  React.useEffect(() => {
+    setOnPreloader(true);
+    Promise.all([mainApi.getInitialProfile(), mainApi.getSavedMovies()])
+      .then((data) => {
+        setcurrentUser(data[0]);
+        //setValues(data[0])
+        const myMovies = data[1].filter((movie) => movie.owner === localStorage.getItem('jwt'))
+        setSavedMovies(myMovies)
+        setOnPreloader(false);
+      })
+      .catch(err => {
+        setInvalidSearchSavedMovies({ onStatus: true, title: "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!" })
+        return console.log(`Ошибка: ${err.status}`)
+      })
+  }, []);
+
+  //поменять навигацию!!!
+  //проверяет есть ли токен в локальном хранилище, если есть, то переводит на страницу "movies"
+  React.useEffect(() => {
+    handleTokenCheck('/movies')
+  }, [])
+
+  //закрывает меню с помощью Esc
   React.useEffect(() => {
     if (isMenuOpen) {
       function handleEsc(event) {
@@ -77,16 +82,30 @@ function App() {
     }
   }, [isMenuOpen])
 
+  //сохранение карточки
+  function handleSavedMovie(movie) {
+    mainApi.savedMovie(movie)
+      .then((newSavedMovie) => {
+        setSavedMovies([newSavedMovie, ...savedMovies])
+      })
+      .catch(err => console.log(`Ошибка: ${err.status}`));
+  }
+
+  //удаление фильма
+  function handleDeleteMovie(movieId) {
+    mainApi.deleteMovie(movieId)
+      .then(() => {
+        setSavedMovies((prewSavedMovies) => prewSavedMovies.filter((m) => m._id !== movieId));
+      })
+      .catch(err => console.log(`Ошибка: ${err.status}`));
+  }
+
+  //закрывает модальное окно по клику на оверлей
   function handlePopupClick(event) {
     if (event.target === event.currentTarget) {
       closePopups()
     }
   }
-
-  //запуск подсчета карточек
-  React.useEffect(() => {
-    handleMoviesCalc();
-  }, [])
 
   //устанавливает сколько карточек будет отражаться при разном размере экрана
   function handleMoviesCalc() {
@@ -99,44 +118,106 @@ function App() {
     return setCalcMovies(12);
   };
 
+  //запуск подсчета карточек
+  React.useEffect(() => {
+    handleMoviesCalc();
+  }, [])
+
   //функция создания списка карточек
   function moviesList(arrayMovies) {
     handleMoviesCalc()
     return arrayMovies.slice(0, calcMovies);
   };
 
-  //функция поиска карточек
-  const handleSearch = (e) => {
-    e.preventDefault();
-    moviesApi.getInitialMovies()
-      .then((movies) => {
-        setMovies(movies);
-        setMoviesFiltered(moviesList(movies))
-        // window.addEventListener("resize", () => { setMovies(moviesList(movies)) });        
-        // return () => window.removeEventListener("resize", () => { setMovies(moviesList(movies)) });
+  //Функция для кнопки "Ещё"
+  function handleMoviesListAddCardsMore() {
+    if (window.innerWidth < 449) {
+      setCalcMovies(calcMovies + 2)
+      return (calcMovies + 2)
+    }
+    else if (window.innerWidth < 949) {
+      setCalcMovies(calcMovies + 2)
+      return (calcMovies + 2)
+    }
+    setCalcMovies(calcMovies + 3)
+    return (calcMovies + 3)
+  };
 
-      })
-      .catch(err => alert(`Ошибка: ${err.status}`))
+  //нужно доделать логику инактивации кнопки Ещё
+  function addMovies() {
+    const newCalcMovies = handleMoviesListAddCardsMore()
+    const newMoviesFiltered = moviesFilteredByWordAndChekbox.slice(0, newCalcMovies)
+    setMoviesFiltered(newMoviesFiltered);
+    (newMoviesFiltered.length === moviesFilteredByWordAndChekbox.length) ? setInactiveButtonMore(true) : setInactiveButtonMore(false);
+  };
+  //функции поиска и фильтрация фильмов
+  function handleMowiesFilterByWordAndChekbox(moviesArray, word, checkbox) {
+    const moviesFilterByWord = moviesArray.filter((m) => (m.nameRU.includes(word) || m.nameEN?.includes(word)))
+    if (checkbox) {
+      return moviesFilterByWord.filter((m) => (m.duration < 41))
+    } return moviesFilterByWord
   }
 
+  //поиск и фильтрация фильмов в общей базе данных
+  const handleSearchMovies = (word, checkbox) => {
+    setOnPreloader(true);
+    if (!word) {
+      return setInvalidSearch({ onStatus: true, title: "Нужно ввести ключевое слово!" })
+    }
+    setInvalidSearch(false);
+    moviesApi.getInitialMovies()
+      .then((movies) => {
+        let moviesArray = handleMowiesFilterByWordAndChekbox(movies, word, checkbox)
+        setMovies(movies);
+        setMoviesFilteredByWordAndChekbox(moviesArray)
+        setMoviesFiltered(moviesList(moviesArray));
+        setOnPreloader(false);
+        (calcMovies < moviesArray.length) ? setInactiveButtonMore(false) : setInactiveButtonMore(true);
+        localStorage.setItem("movies", JSON.stringify(moviesArray))
+        localStorage.setItem("checkbox", JSON.stringify(checkbox))
+        localStorage.setItem("word", word)
+        if (moviesList.length === 0) {
+          return setInvalidSearch({ onStatus: true, title: "Ничего не найдено!" })
+        }
+        return setInvalidSearch({ onStatus: false, title: "" })
+      })
+      .catch(err => {
+        setInvalidSearch({ onStatus: true, title: "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!" })
+        return console.log(`Ошибка: ${err.status}`)
+      });
+  }
+
+  //функция поиска и фильтрация сохраненных фильмов
+  const handleSearchSavedMovies = (word, checkbox) => {
+    let savedMoviesList = handleMowiesFilterByWordAndChekbox(savedMovies, word, checkbox)
+    setClickSearch(true);
+    setMoviesFilteredSaved(moviesList(savedMoviesList));
+    if (savedMoviesList.length === 0) {
+      return setInvalidSearchSavedMovies({ onStatus: true, title: "Ничего не найдено!" })
+    }
+    return setInvalidSearchSavedMovies({ onStatus: false, title: "" })
+  }
+
+  //меняет количество карточек на экране в зависимости от ширины экрана
   React.useEffect(() => {
     const handleScreenWidth = () => {
-      setMoviesFiltered(moviesList(movies))
+      setMoviesFiltered(moviesList(moviesFilteredByWordAndChekbox))
     };
     window.addEventListener("resize", handleScreenWidth);
     return () => window.removeEventListener("resize", handleScreenWidth);
   }, [movies, calcMovies]);
 
+  //регистрация
   const handleInfoTooltipSubmitRegister = (data) => {
     auth
       .signup(data)
       .then(res => {
-        if (res.status !== 400) {          
+        if (res.status !== 400) {
           localStorage.setItem('jwt', res._id);
           setcurrentUser(res);
           setLoggedIn(true);
           navigate('/movies');
-          setInfoTooltip({ onStatus: false})
+          setInfoTooltip({ onStatus: false })
         } else {
           setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
         }
@@ -146,6 +227,7 @@ function App() {
       })
   }
 
+  //логин
   const handleInfoTooltipSubmitLogin = (data) => {
     if (!data.email || !data.password) {
       return setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
@@ -158,7 +240,7 @@ function App() {
           setcurrentUser(res.data);
           setLoggedIn(true);
           navigate('/movies');
-          setInfoTooltip({ onStatus: false})
+          setInfoTooltip({ onStatus: false })
         }
       })
       .catch(() => {
@@ -167,47 +249,27 @@ function App() {
   }
   //обновление профиля(изменение данных)
   function handleUpdateUser(data) {
-    console.log(data)
     mainApi.sendDataProfile(data)
       .then(res => {
         setcurrentUser(res);
-        //closeAllPopups()
       })
       .catch(err => console.log(`Ошибка: ${err.status}`))
   }
 
-  ////В разработке эта строчка под вопросом 
-  //setMovies((prewMovies) => prewMovies.map((m) => m.id === movie.id ? newCard : m));
-
-  function handleSavedMovie(movie) {
-
-    //Нужно доработать сохранение карточки (пока работает не корректно)
-    mainApi.savedMovie(movie)
-      .then((newSavedMovie) => {
-        setSavedMovies([newSavedMovie, ...savedMovies])
-      })
-      .catch(err => console.log(`Ошибка: ${err.status}`));
-  }
-
-  function handleDeleteMovie(movieId) {
-    mainApi.deleteMovie(movieId)
-      .then(() => {
-        setSavedMovies((prewSavedMovies) => prewSavedMovies.filter((m) => m._id !== movieId));
-      })
-      .catch(err => console.log(`Ошибка: ${err.status}`));
-  }
-
+  //выход
   const handleLogout = (event) => {
     auth
       .signout()
       .then(res => {
         event.preventDefault()
         localStorage.removeItem('jwt')
+        localStorage.removeItem('movies')
+        localStorage.removeItem('checkbox')
+        localStorage.removeItem('word')
         setLoggedIn(false)
         navigate('/')
       })
   }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -218,14 +280,17 @@ function App() {
               loggedIn={loggedIn}
               component={
                 <Movies
-                  savedMovies={savedMovies}
                   movies={moviesFiltered}
-                  handleSearch={handleSearch}
-                  buttonDisabled={"on"}
+                  handleSearch={handleSearchMovies}
                   onMenu={() => setIsMenuOpen(true)}
-                  handleSavedMovie={handleSavedMovie}
                   handleDeleteMovie={handleDeleteMovie}
+                  handleSavedMovie={handleSavedMovie}
+                  savedMovies={savedMovies}
                   currentUser={currentUser}
+                  invalidSearch={invalidSearch}
+                  onPreloader={onPreloader}
+                  addMovies={addMovies}
+                  inactiveButtonMore={inactiveButtonMore}
                 />} />
           } />
           <Route path="/saved-movies" element={
@@ -233,15 +298,15 @@ function App() {
               loggedIn={loggedIn}
               component={
                 <SavedMovies
-                  movies={savedMovies}
-                  savedMovies={savedMovies}
-                  handleSearch={handleSearch}
-                  buttonDisabled={"of"}
+                  movies={(!clickSearch) ? savedMovies : moviesFilteredSaved}
+                  handleSearch={handleSearchSavedMovies}
                   onMenu={() => setIsMenuOpen(true)}
-                  handleSavedMovie={handleSavedMovie}
                   handleDeleteMovie={handleDeleteMovie}
+                  savedMovies={savedMovies}
                   currentUser={currentUser}
-                  selector={"element__button"}
+                  invalidSearchSavedMovies={invalidSearchSavedMovies}
+                  onPreloader={onPreloader}
+                  
                 />} />
           } />
           <Route path="/profile" element={
@@ -252,6 +317,7 @@ function App() {
                   onUpdateUser={handleUpdateUser}
                   onMenu={() => setIsMenuOpen(true)}
                   handleLogout={handleLogout}
+                  currentUser={currentUser}
                 />} />
           } />
           <Route path="/signin" element={<Login

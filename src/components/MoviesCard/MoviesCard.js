@@ -1,8 +1,5 @@
 import React from 'react';
 import './MoviesCard.css';
-import markV from "../../images/V.svg"
-import markX from "../../images/X.svg"
-
 
 function MoviesCard(props) {
   const isClick = props.savedMovies.some(item => item.id === props.id)

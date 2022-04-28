@@ -41,7 +41,7 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
-  background-color: #fff;
+  background-color: #2BE080;
   width: 320px;
   height: 36px;
   margin: 50px auto 80px;
@@ -51,6 +51,20 @@
 .elements__button:hover {
   opacity: 0.6;
   cursor: pointer;
+}
+
+.elements__button_inactive {
+  border: 1px solid #E8E8E8;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  background-color: #fff;
+  width: 320px;
+  height: 36px;
+  margin: 50px auto 80px;
+  padding: 0;
 }
 
 .elements__button_disabled {

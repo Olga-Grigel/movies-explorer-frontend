@@ -1,4 +1,9 @@
 .menu {
+  display: none;
+}
+
+@media screen and (max-width: 950px) {
+.menu {
   position: fixed;
   top: 0;
   left: 0;
@@ -16,7 +21,8 @@
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s linear 0.5s, opacity 0.5s linear;
-}
+}}
+
 
 .menu_opened {
   visibility: visible;

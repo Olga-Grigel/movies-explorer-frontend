@@ -77,6 +77,14 @@
   cursor: pointer;
 }
 
+
+  .navigation__link_active {
+    border-bottom: 1px solid #000;
+  }
+
+  .navigation__link_active {
+    font-weight: 500;
+  }
 @media screen and (max-width: 950px) {
   .navigation__link_active {
     border-bottom: 1px solid #000;
@@ -105,7 +113,7 @@
 }
 
 .navigation__link_movies {
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   line-height: 18px;
   margin-right: 20px;

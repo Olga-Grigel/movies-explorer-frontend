@@ -50,7 +50,6 @@ function App() {
     Promise.all([mainApi.getInitialProfile(), mainApi.getSavedMovies()])
       .then((data) => {
         setcurrentUser(data[0]);
-        //setValues(data[0])
         const myMovies = data[1].filter((movie) => movie.owner === localStorage.getItem('jwt'))
         setSavedMovies(myMovies)
         setOnPreloader(false);

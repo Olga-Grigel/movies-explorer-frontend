@@ -3,22 +3,19 @@ import React from 'react';
 import ButtonsAuth from '../ButtonsAuth/ButtonsAuth';
 import useFormWithValidation from '../../utils/FormValidator';
 
-function FormAuth({ className, submit, infoTooltip, textButton, textLink, link, text }) {
+function FormAuth({ submit, infoTooltip, textButton, textLink, link, text, children, name }) {
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation()
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    submit({ name: values.name, email: values.email, password: values.password });
+    submit({ name: name, email: values.email, password: values.password });
     resetForm()
   }
 
   return (
     <form className="auth" name="auth" onSubmit={handleSubmit}>
       <div className="auth__inputs">
-        <label className={className}><p className="auth__label">Имя</p>
-          <input id="name" type="text" name="name" className="auth__input" value={values.name||""} onChange={handleChange} />
-          <span className={(isValid)?"auth__error_input":"auth__error_input_active"}>{errors.name}</span>
-        </label>
+        {children}
         <label className="auth__labels"><p className="auth__label">E-mail</p>
           <input id="email" type="email" name="email" className="auth__input auth__input_email" required value={values.email||""} onChange={handleChange} />
           <span className={(isValid)?"auth__error_input":"auth__error_input_active"}>{errors.email}</span>

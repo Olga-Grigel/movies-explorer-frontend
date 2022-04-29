@@ -12,13 +12,13 @@ function Login({ submitLogin, infoTooltip }) {
           text={"Рады видеть!"}
         />
         <FormAuth
-          className={"register__labels_off"}
           submit={submitLogin}
           infoTooltip={infoTooltip}
           textButton={"Войти"}
           text={"Ещё не зарегистрированы?"}
           textLink={"Регистрация"}
           link={"/signup"}
+          children={<div className="register__labels_off"></div>}
         />
       </div>
     </div>

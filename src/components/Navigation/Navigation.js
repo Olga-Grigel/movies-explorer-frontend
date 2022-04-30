@@ -14,7 +14,7 @@ function Navigation({ onClose}) {
         <li className="navigation__list"><NavLink to='/saved-movies' className={({isActive})=>isActive?"navigation__link_active navigation__link navigation__link_saved":"navigation__link navigation__link_saved"} onClick={onClose}>{'Сохраненные фильмы'}</NavLink></li>
         </ul>
       </li>
-      <li className="navigation__block"><Link to='/profile' className="navigation__link navigation__link navigation__link_account" onClick={onClose}>{'Аккаунт'}<div className="navigation__account"><img className="navigation__icon" src={imageAccount} alt="Значок аккаунта" /></div></Link></li>
+      <li className="navigation__block"><NavLink to='/profile' className={({isActive})=>isActive?"navigation__link_active navigation__link navigation__link_account":"navigation__link navigation__link_account"} onClick={onClose}>{'Аккаунт'}<div className="navigation__account"><img className="navigation__icon" src={imageAccount} alt="Значок аккаунта" /></div></NavLink></li>
     </ul >
   );
 }

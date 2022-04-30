@@ -67,6 +67,7 @@
 
 .navigation__link {
   font-family: 'Inter', sans-serif;
+  font-weight: 400;
   font-style: normal;
   text-align: right;
   text-decoration: none;
@@ -74,14 +75,23 @@
   margin: 0;
 }
 
+@media screen and (max-width: 950px) {
+  .navigation__link {
+    font-weight: 500;
+  }
+}
 .navigation__link:hover {
   opacity: 0.6;
   cursor: pointer;
+}
+.navigation__link_active {
+  font-weight: 500;
 }
 
 @media screen and (max-width: 950px) {
   .navigation__link_active {
     border-bottom: 1px solid #000;
+    font-weight: 500;
   }
 }
 
@@ -107,7 +117,6 @@
 }
 
 .navigation__link_movies {
-  font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   margin-right: 20px;
@@ -115,6 +124,7 @@
 
 @media screen and (max-width: 950px) {
   .navigation__link_movies {
+    font-weight: 500;
     font-size: 18px;
     line-height: 22px;
     margin-right: 0;
@@ -123,7 +133,6 @@
 }
 
 .navigation__link_saved {
-  font-weight: 400;
   font-size: 14px;
   line-height: 18px;
   margin-right: 50px;
@@ -142,7 +151,6 @@
 .navigation__link_account {
   display: flex;
   align-items: baseline;
-  font-weight: 500;
   font-size: 14px;
   line-height: 16px;
   font-family: 'Inter', sans-serif;
@@ -157,11 +165,7 @@
   .navigation__link_account {
     margin-bottom: 92px;
     margin-top: 0;
-  }
-}
-
-@media screen and (max-width: 950px) {
-  .navigation__link_account {
+    font-weight: 500;
     margin-bottom: 48px;
   }
 }

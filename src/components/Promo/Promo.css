@@ -47,7 +47,9 @@
     font-size: 10px;
   }
 }
-
+.colorlanding__auth_disable {
+  display: none;
+}
 .colorlanding__signup {
   text-align: right;
   color: #fff;

@@ -58,7 +58,7 @@ display: none;
     border: none;
     padding: 0;
     background-image: url(../../images/burger.svg);
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0);
   }
 }
 

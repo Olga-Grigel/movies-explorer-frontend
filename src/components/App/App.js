@@ -24,7 +24,6 @@ function App() {
   const [moviesFilteredByWordAndChekbox, setMoviesFilteredByWordAndChekbox] = React.useState([]);
   const [moviesFilteredSaved, setMoviesFilteredSaved] = React.useState([]);
   const [infoTooltip, setInfoTooltip] = React.useState({ onStatus: false, title: "" });
-  const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setcurrentUser] = React.useState({});
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [clickSearch, setClickSearch] = React.useState(false);
@@ -32,13 +31,6 @@ function App() {
   const [invalidSearchSavedMovies, setInvalidSearchSavedMovies] = React.useState({ onStatus: false, title: "" });
   const [onPreloader, setOnPreloader] = React.useState(false);
   const [inactiveButtonMore, setInactiveButtonMore] = React.useState(true);
-
-  const handleTokenCheck = (path) => {
-    if (localStorage.getItem('jwt')) {
-      setLoggedIn(true);
-      navigate(path);
-    }
-  }
 
   function closePopups() {
     setIsMenuOpen(false);
@@ -60,13 +52,7 @@ function App() {
       })
   }, []);
 
-  //поменять навигацию!!!
-  //проверяет есть ли токен в локальном хранилище, если есть, то переводит на страницу "movies"
-  React.useEffect(() => {
-    handleTokenCheck('/movies')
-  }, [])
-
-  //закрывает меню с помощью Esc
+   //закрывает меню с помощью Esc
   React.useEffect(() => {
     if (isMenuOpen) {
       function handleEsc(event) {
@@ -214,7 +200,6 @@ function App() {
         if (res.status !== 400) {
           localStorage.setItem('jwt', res._id);
           setcurrentUser(res);
-          setLoggedIn(true);
           navigate('/movies');
           setInfoTooltip({ onStatus: false })
         } else {
@@ -237,7 +222,6 @@ function App() {
         if (res?.data._id) {
           localStorage.setItem('jwt', res?.data._id);
           setcurrentUser(res.data);
-          setLoggedIn(true);
           navigate('/movies');
           setInfoTooltip({ onStatus: false })
         }
@@ -265,7 +249,6 @@ function App() {
         localStorage.removeItem('movies')
         localStorage.removeItem('checkbox')
         localStorage.removeItem('word')
-        setLoggedIn(false)
         navigate('/')
       })
   }
@@ -273,10 +256,10 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <Routes>
-          <Route exact path="/" element={<Main />} />
+          <Route exact path="/" element={<Main 
+          />} />
           <Route path="/movies" element={
             <ProtectedRoute
-              loggedIn={loggedIn}
               component={
                 <Movies
                   movies={moviesFiltered}
@@ -294,7 +277,6 @@ function App() {
           } />
           <Route path="/saved-movies" element={
             <ProtectedRoute
-              loggedIn={loggedIn}
               component={
                 <SavedMovies
                   movies={(!clickSearch) ? savedMovies : moviesFilteredSaved}
@@ -310,7 +292,6 @@ function App() {
           } />
           <Route path="/profile" element={
             <ProtectedRoute
-              loggedIn={loggedIn}
               component={
                 <Profile
                   onUpdateUser={handleUpdateUser}
@@ -327,7 +308,7 @@ function App() {
             submitRegister={handleInfoTooltipSubmitRegister}
             infoTooltip={infoTooltip}
           />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
         <Menu
           isOpen={isMenuOpen}

@@ -7,15 +7,13 @@ import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 import Footer from '../Footer/Footer';
-import { useNavigate } from 'react-router-dom';
 
-function Main() {
-  const navigate = useNavigate()
-  //проверяет есть ли токен в локальном хранилище, если есть, то переводит на страницу "movies"
+function Main({onMenu}) {
 
   return (
     <main className="landing">
       <Promo
+      onMenu={onMenu}
       />
       <NavTab />
       <AboutProject />

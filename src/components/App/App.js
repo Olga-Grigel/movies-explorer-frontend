@@ -37,7 +37,7 @@ function App() {
       return navigate('/movies');
     }
   }, [])
-  
+
   function closePopups() {
     setIsMenuOpen(false);
   }
@@ -263,6 +263,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route exact path="/" element={<Main 
+          onMenu={() => setIsMenuOpen(true)}
           />} />
           <Route path="/movies" element={
             <ProtectedRoute

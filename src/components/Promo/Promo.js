@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import Header from '../Header/Header';
 import React from 'react';
 
-function Promo() {
+function Promo({onMenu}) {
   return (
     <section className="colorlanding">
       <Header
+      onMenu={onMenu}
         children={
           <div className={(localStorage.getItem('jwt')) ? "colorlanding__auth_disable" : "colorlanding__auth"}>
             <Link to='/signup' className="colorlanding__signup" >{'Регистрация'}</Link>

@@ -12,11 +12,7 @@ import { useNavigate } from 'react-router-dom';
 function Main() {
   const navigate = useNavigate()
   //проверяет есть ли токен в локальном хранилище, если есть, то переводит на страницу "movies"
-  React.useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      return navigate('/movies');
-    }
-  }, [])
+
   return (
     <main className="landing">
       <Promo

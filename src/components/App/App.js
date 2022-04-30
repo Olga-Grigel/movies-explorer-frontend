@@ -32,6 +32,12 @@ function App() {
   const [onPreloader, setOnPreloader] = React.useState(false);
   const [inactiveButtonMore, setInactiveButtonMore] = React.useState(true);
 
+  React.useEffect(() => {
+    if (localStorage.getItem('jwt')) {
+      return navigate('/movies');
+    }
+  }, [])
+  
   function closePopups() {
     setIsMenuOpen(false);
   }

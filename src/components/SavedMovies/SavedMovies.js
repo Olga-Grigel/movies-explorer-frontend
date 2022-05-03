@@ -5,9 +5,24 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
+import mainApi from '../../utils/MainApi';
 
-function SavedMovies({ movies, handleSearch, onMenu, handleDeleteMovie, savedMovies, currentUser, invalidSearchSavedMovies, onPreloader }) {
-  
+function SavedMovies({ movies, handleSearch, onMenu, handleDeleteMovie, savedMovies, currentUser, invalidSearchSavedMovies, onPreloader, setSavedMovies, setOnPreloader, setInvalidSearchSavedMovies }) {
+    //получаем свои сохраненные фильмы
+    React.useEffect(() => {
+      setOnPreloader(true);
+      mainApi.getSavedMovies()
+        .then((data) => {
+          const myMovies = data.filter((movie) => movie.owner === localStorage.getItem('jwt'))
+          setSavedMovies(myMovies)
+          setOnPreloader(false);
+        })
+        .catch(err => {
+          setInvalidSearchSavedMovies({ onStatus: true, title: "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!" })
+          return console.log(`Ошибка: ${err.status}`)
+        })
+    }, []);
+
   //инпут поисковой строки
   const [values, setValues] = React.useState({ search: '' })
 

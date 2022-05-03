@@ -1,5 +1,5 @@
 import moviesApi from '../utils/MoviesApi';
-const BASE_URL = 'https://diplom.nomoredomains.work';
+const BASE_URL = "https://diplom.nomoredomains.work";
 
 export const signup = ({ name, email, password }) => {
   return fetch(`${BASE_URL}/signup`, {

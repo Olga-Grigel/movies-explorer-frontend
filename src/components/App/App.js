@@ -30,35 +30,13 @@ function App() {
   const [invalidSearch, setInvalidSearch] = React.useState({ onStatus: false, title: "" });
   const [invalidSearchSavedMovies, setInvalidSearchSavedMovies] = React.useState({ onStatus: false, title: "" });
   const [onPreloader, setOnPreloader] = React.useState(false);
-  const [inactiveButtonMore, setInactiveButtonMore] = React.useState(true);
-
-  React.useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      return navigate('/movies');
-    }
-  }, [])
+  const [inactiveButtonMore, setInactiveButtonMore] = React.useState(false);
 
   function closePopups() {
     setIsMenuOpen(false);
   }
 
-  //получаем данные профиля и свои сохраненные фильмы
-  React.useEffect(() => {
-    setOnPreloader(true);
-    Promise.all([mainApi.getInitialProfile(), mainApi.getSavedMovies()])
-      .then((data) => {
-        setcurrentUser(data[0]);
-        const myMovies = data[1].filter((movie) => movie.owner === localStorage.getItem('jwt'))
-        setSavedMovies(myMovies)
-        setOnPreloader(false);
-      })
-      .catch(err => {
-        setInvalidSearchSavedMovies({ onStatus: true, title: "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!" })
-        return console.log(`Ошибка: ${err.status}`)
-      })
-  }, []);
-
-   //закрывает меню с помощью Esc
+  //закрывает меню с помощью Esc
   React.useEffect(() => {
     if (isMenuOpen) {
       function handleEsc(event) {
@@ -112,11 +90,10 @@ function App() {
   //запуск подсчета карточек
   React.useEffect(() => {
     handleMoviesCalc();
-  }, [])
+  }, [calcMovies])
 
   //функция создания списка карточек
   function moviesList(arrayMovies) {
-    handleMoviesCalc()
     return arrayMovies.slice(0, calcMovies);
   };
 
@@ -134,40 +111,62 @@ function App() {
     return (calcMovies + 3)
   };
 
-  //нужно доделать логику инактивации кнопки Ещё
+  //кнопкa Ещё
   function addMovies() {
     const newCalcMovies = handleMoviesListAddCardsMore()
     const newMoviesFiltered = moviesFilteredByWordAndChekbox.slice(0, newCalcMovies)
     setMoviesFiltered(newMoviesFiltered);
-    (newMoviesFiltered.length === moviesFilteredByWordAndChekbox.length) ? setInactiveButtonMore(true) : setInactiveButtonMore(false);
+    (newMoviesFiltered.length === moviesFilteredByWordAndChekbox.length) ? setInactiveButtonMore(false) : setInactiveButtonMore(true);
   };
+
   //функции поиска и фильтрация фильмов
   function handleMowiesFilterByWordAndChekbox(moviesArray, word, checkbox) {
-    const moviesFilterByWord = moviesArray.filter((m) => (m.nameRU.includes(word) || m.nameEN?.includes(word)))
+    const moviesFilterByWord = moviesArray.filter((m) => (m.nameRU.toLowerCase().includes(word.toLowerCase()) || m.nameEN?.toLowerCase().includes(word.toLowerCase())))
     if (checkbox) {
+
       return moviesFilterByWord.filter((m) => (m.duration < 41))
-    } return moviesFilterByWord
+    } else {
+      return moviesFilterByWord
+    }
   }
 
   //поиск и фильтрация фильмов в общей базе данных
+  function inactiveButton(boolean) {
+    return boolean
+  }
+  const localStorageMovies = JSON.parse(localStorage.getItem('movies'))
+  const localStorageCheckbox = JSON.parse(localStorage.getItem('checkbox'));
+  const localStorageWord = localStorage.getItem('word');
+
+  React.useEffect(() => {
+    if (localStorage.getItem('movies')) {
+      let moviesFilterArray = handleMowiesFilterByWordAndChekbox(localStorageMovies, localStorageWord, localStorageCheckbox);
+      (calcMovies < moviesFilterArray.length) ? setInactiveButtonMore(true) : setInactiveButtonMore(false);
+      setMoviesFiltered(moviesList(moviesFilterArray));
+      setMoviesFilteredByWordAndChekbox(moviesFilterArray)
+    } else {
+      setMoviesFiltered([]);
+    }
+  }, [calcMovies])
+
   const handleSearchMovies = (word, checkbox) => {
     setOnPreloader(true);
     if (!word) {
       return setInvalidSearch({ onStatus: true, title: "Нужно ввести ключевое слово!" })
     }
-    setInvalidSearch(false);
+    setInvalidSearch({ onStatus: false });
     moviesApi.getInitialMovies()
       .then((movies) => {
-        let moviesArray = handleMowiesFilterByWordAndChekbox(movies, word, checkbox)
+        let moviesFilterArray = handleMowiesFilterByWordAndChekbox(movies, word, checkbox);
+        setMoviesFilteredByWordAndChekbox(moviesFilterArray);
+        setMoviesFiltered(moviesList(moviesFilterArray));
+        (calcMovies < moviesFilterArray.length) ? setInactiveButtonMore(true) : setInactiveButtonMore(false);
         setMovies(movies);
-        setMoviesFilteredByWordAndChekbox(moviesArray)
-        setMoviesFiltered(moviesList(moviesArray));
-        setOnPreloader(false);
-        (calcMovies < moviesArray.length) ? setInactiveButtonMore(false) : setInactiveButtonMore(true);
-        localStorage.setItem("movies", JSON.stringify(moviesArray))
+        localStorage.setItem("movies", JSON.stringify(movies))
         localStorage.setItem("checkbox", JSON.stringify(checkbox))
         localStorage.setItem("word", word)
-        if (moviesList.length === 0) {
+        setOnPreloader(false);
+        if (moviesList(moviesFilterArray).length === 0) {
           return setInvalidSearch({ onStatus: true, title: "Ничего не найдено!" })
         }
         return setInvalidSearch({ onStatus: false, title: "" })
@@ -196,8 +195,12 @@ function App() {
     };
     window.addEventListener("resize", handleScreenWidth);
     return () => window.removeEventListener("resize", handleScreenWidth);
-  }, [movies, calcMovies]);
+  }, [moviesFiltered, calcMovies]);
 
+  // //функция выводит трейлер фильма по клику на карточку
+  // function getMovieTrailerClickingOnCard(movie) {
+
+  // }
   //регистрация
   const handleInfoTooltipSubmitRegister = (data) => {
     auth
@@ -241,8 +244,11 @@ function App() {
     mainApi.sendDataProfile(data)
       .then(res => {
         setcurrentUser(res);
+        setInfoTooltip({ onStatus: true, title: "Данные профиля обновились!" })
       })
-      .catch(err => console.log(`Ошибка: ${err.status}`))
+      .catch(err => {
+        return console.log(`Ошибка: ${err.status}`)
+      })
   }
 
   //выход
@@ -255,6 +261,9 @@ function App() {
         localStorage.removeItem('movies')
         localStorage.removeItem('checkbox')
         localStorage.removeItem('word')
+        setMoviesFiltered([])
+        setCalcMovies(0)
+        setInactiveButtonMore(false)
         navigate('/')
       })
   }
@@ -262,14 +271,14 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <Routes>
-          <Route exact path="/" element={<Main 
-          onMenu={() => setIsMenuOpen(true)}
+          <Route exact path="/" element={<Main
+            onMenu={() => setIsMenuOpen(true)}
           />} />
           <Route path="/movies" element={
             <ProtectedRoute
               component={
                 <Movies
-                  movies={moviesFiltered}
+                  moviesFiltered={moviesFiltered}
                   handleSearch={handleSearchMovies}
                   onMenu={() => setIsMenuOpen(true)}
                   handleDeleteMovie={handleDeleteMovie}
@@ -280,6 +289,12 @@ function App() {
                   onPreloader={onPreloader}
                   addMovies={addMovies}
                   inactiveButtonMore={inactiveButtonMore}
+                  setMoviesFiltered={setMoviesFiltered}
+                  handleMowiesFilterByWordAndChekbox={handleMowiesFilterByWordAndChekbox}
+                  moviesList={moviesList}
+                  inactiveButton={inactiveButton}
+                  calcMovies={calcMovies}
+                  handleMoviesCalc={handleMoviesCalc}
                 />} />
           } />
           <Route path="/saved-movies" element={
@@ -294,7 +309,9 @@ function App() {
                   currentUser={currentUser}
                   invalidSearchSavedMovies={invalidSearchSavedMovies}
                   onPreloader={onPreloader}
-                  
+                  setSavedMovies={setSavedMovies}
+                  setOnPreloader={setOnPreloader}
+                  setInvalidSearchSavedMovies={setInvalidSearchSavedMovies}
                 />} />
           } />
           <Route path="/profile" element={
@@ -305,6 +322,9 @@ function App() {
                   onMenu={() => setIsMenuOpen(true)}
                   handleLogout={handleLogout}
                   currentUser={currentUser}
+                  setInfoTooltip={setInfoTooltip}
+                  infoTooltip={infoTooltip}
+                  setcurrentUser={setcurrentUser}
                 />} />
           } />
           <Route path="/signin" element={<Login

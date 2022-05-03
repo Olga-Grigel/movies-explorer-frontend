@@ -3,7 +3,6 @@ import React from 'react';
 
 
 function SearchForm({ handleSearch, handleChangeInput, values, handleChangeСheckbox, checked }) {
-  
   //функция сабмита
   const handleSubmit = (e) => {
     e.preventDefault();

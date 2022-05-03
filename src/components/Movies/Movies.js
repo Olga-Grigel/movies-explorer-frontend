@@ -6,14 +6,13 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 
-function Movies({ movies, handleSearch, onMenu, handleDeleteMovie, handleSavedMovie, savedMovies, currentUser, invalidSearch, onPreloader, addMovies, inactiveButtonMore}) {
-  
+function Movies({ moviesFiltered, inactiveButtonMore, handleSearch, onMenu, handleDeleteMovie, handleSavedMovie, savedMovies, currentUser, invalidSearch, onPreloader, addMovies, inactiveButton, setMoviesFiltered, handleMowiesFilterByWordAndChekbox, moviesList, calcMovies, handleMoviesCalc }) {
   //инпут поисковой строки
   const [values, setValues] = React.useState({ search: '' })
-
+  const localStorageWord = localStorage.getItem('word');
   React.useEffect(() => {
-    if (localStorage.getItem('word')) {
-      return setValues({ search: localStorage.getItem('word') })
+    if (localStorageWord) {
+      return setValues({ search: localStorageWord })
     }
     return setValues({ search: '' })
   }, [])
@@ -27,10 +26,10 @@ function Movies({ movies, handleSearch, onMenu, handleDeleteMovie, handleSavedMo
   }
   //чекбокс
   const [checked, setChecked] = React.useState(false);
-
+  const localStorageCheckbox = JSON.parse(localStorage.getItem('checkbox'));
   React.useEffect(() => {
-    if (localStorage.getItem('word')) {
-      return setChecked(JSON.parse(localStorage.getItem('checkbox')))
+    if (localStorageWord) {
+      return setChecked(localStorageCheckbox)
     }
     return setChecked(false)
   }, [])
@@ -55,15 +54,15 @@ function Movies({ movies, handleSearch, onMenu, handleDeleteMovie, handleSavedMo
       <div className={(onPreloader) ? "savedmovies__preloader_active" : "savedmovies__preloader_disable"}>{<Preloader />}</div>
       <div className={(!invalidSearch.onStatus) ? "movies_list_active" : "movies_list_disable"}>
         < MoviesCardList
-          movies={movies}
+          movies={moviesFiltered}
           handleDeleteMovie={handleDeleteMovie}
           handleSavedMovie={handleSavedMovie}
           savedMovies={savedMovies}
           currentUser={currentUser}
         />
       </div>
-      <button className={(!inactiveButtonMore) ? "elements__button" : "elements__button_disabled"} onClick={addMovies}>Ещё</button>
-      <button className={(inactiveButtonMore) ? "elements__button_inactive" : "elements__button_disabled"}>Ещё</button>
+      <button className={(!inactiveButtonMore) ? "elements__button_disabled" : "elements__button"} onClick={addMovies}>Ещё</button>
+      {/* <button className={(inactiveButtonMore) ? "elements__button_inactive" : "elements__button_disabled"}>Ещё</button> */}
       {<Footer />}
     </section>
 

@@ -52,6 +52,7 @@
 .profile__form {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .profile__labels {
@@ -171,4 +172,20 @@
   position: absolute;
   top: 35px;
   left: 0;
+}
+
+.profile__info_active {
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 10px;
+  color: #2BE080;
+  transition: opacity 0.3s;
+  position: absolute;
+  top: 120px;
+  left: 0;
+}
+.profile__info_disable {
+display: none;
 }

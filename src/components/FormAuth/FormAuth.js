@@ -26,7 +26,7 @@ function FormAuth({ submit, infoTooltip, textButton, textLink, link, text, child
         </label>
       </div>
       <p className={infoTooltip.onStatus ? 'auth__error auth__error_active' : 'auth__error'}>{infoTooltip.title}</p>
-      <ButtonsAuth textButton={textButton} textLink={textLink} link={link} text={text} />
+      <ButtonsAuth textButton={textButton} textLink={textLink} link={link} text={text} isValid={isValid} />
     </form >
   );
 }

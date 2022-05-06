@@ -2,7 +2,7 @@ import './FormAuth.css';
 import React from 'react';
 import ButtonsAuth from '../ButtonsAuth/ButtonsAuth';
 
-function FormAuth({ submit, infoTooltip, textButton, textLink, link, text, children, name, isValidName }) {
+function FormAuth({ submit, infoTooltip, textButton, textLink, link, text, children, name, isValidName, setInfoTooltip }) {
   const [valuesEmail, setValuesEmail] = React.useState("");
   const [errorEmail, setErrorEmail] = React.useState("");
   const [isValidEmail, setIsValidEmail] = React.useState(false);
@@ -31,7 +31,6 @@ function FormAuth({ submit, infoTooltip, textButton, textLink, link, text, child
   }
 
   const handleSubmit = (e) => {
-    console.log("вызов функции")
     e.preventDefault();
     submit({ name: name, email: valuesEmail, password: valuesPassword });
   }
@@ -50,7 +49,7 @@ function FormAuth({ submit, infoTooltip, textButton, textLink, link, text, child
         </label>
       </div>
       <p className={infoTooltip.onStatus ? 'auth__error auth__error_active' : 'auth__error'}>{infoTooltip.title}</p>
-      <ButtonsAuth textButton={textButton} textLink={textLink} link={link} text={text} isValidEmail={isValidEmail} isValidPassword={isValidPassword} isValidName={isValidName} />
+      <ButtonsAuth textButton={textButton} textLink={textLink} link={link} text={text} isValidEmail={isValidEmail} isValidPassword={isValidPassword} isValidName={isValidName} setInfoTooltip={setInfoTooltip}/>
     </form >
   );
 }

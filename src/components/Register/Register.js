@@ -4,7 +4,7 @@ import HeaderAuth from '../HeaderAuth/HeaderAuth';
 import FormAuth from '../FormAuth/FormAuth';
 import { useNavigate } from 'react-router-dom';
 
-function Register({ submitRegister, infoTooltip }) {
+function Register({ submitRegister, infoTooltip, setInfoTooltip }) {
   //const { values, handleChange, errors, isValid } = useFormWithValidation()
   const [valuesName, setValuesName] = React.useState("");
   const [errorName, setErrorName] = React.useState("");
@@ -39,6 +39,7 @@ function Register({ submitRegister, infoTooltip }) {
           textLink={"Войти"}
           link={"/signin"}
           isValidName={isValidName}
+          setInfoTooltip={setInfoTooltip}
           children={<label className="auth__labels"><p className="auth__label">Имя</p>
             <input id="name" type="text" name="name" className="auth__input" value={valuesName || ""} required minLength="2" maxLength="30" onChange={handleChangeName} />
             <span className={(isValidName) ? "auth__error_input" : "auth__error_input_active"}>{errorName}</span>

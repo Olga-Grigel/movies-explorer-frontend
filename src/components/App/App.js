@@ -141,6 +141,7 @@ function App() {
       let moviesFilterArray = handleMowiesFilterByWordAndChekbox(localStorageMovies, localStorageWord, localStorageCheckbox);
       (calcMovies < moviesFilterArray.length) ? setInactiveButtonMore(true) : setInactiveButtonMore(false);
       setMoviesFiltered(moviesList(moviesFilterArray));
+      console.log(calcMovies)
       setMoviesFilteredByWordAndChekbox(moviesFilterArray)
     } else {
       setMoviesFiltered([]);
@@ -329,10 +330,12 @@ function App() {
           <Route path="/signin" element={<Login
             submitLogin={handleInfoTooltipSubmitLogin}
             infoTooltip={infoTooltip}
+            setInfoTooltip={setInfoTooltip}
           />} />
           <Route path="/signup" element={<Register
             submitRegister={handleInfoTooltipSubmitRegister}
             infoTooltip={infoTooltip}
+            setInfoTooltip={setInfoTooltip}
           />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>

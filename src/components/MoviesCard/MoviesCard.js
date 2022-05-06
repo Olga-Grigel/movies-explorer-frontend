@@ -1,8 +1,6 @@
 import React from 'react';
 import './MoviesCard.css';
-import markV from "../../images/V.svg"
-import markX from "../../images/X.svg"
-
+import { Link } from 'react-router-dom';
 
 function MoviesCard(props) {
   const isClick = props.savedMovies.some(item => item.id === props.id)
@@ -59,7 +57,7 @@ function MoviesCard(props) {
         }
         </p>
       </div>
-      <img className="element__photo" src={props.foto} alt="Картинка с фильма" />
+      <a target="_blank" href={props.movie.trailerLink}><img className="element__photo" src={props.foto} alt="Картинка с фильма" /></a>
       <button type="button" className={(saved) ? "element__button" : selectorButton} onClick={handleClick}><div className={(saved) ? "element__button_image_X" : selectorText}>{(saved) ? "" : textButton}</div></button>
     </div>
   );

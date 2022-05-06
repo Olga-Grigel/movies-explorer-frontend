@@ -52,13 +52,17 @@ display: none;
   display: none;
 }
 
+.header__navigation__button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
 @media screen and (max-width: 950px) {
   .header__navigation__button {
     display: block;
     border: none;
     padding: 0;
     background-image: url(../../images/burger.svg);
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0);
   }
 }
 

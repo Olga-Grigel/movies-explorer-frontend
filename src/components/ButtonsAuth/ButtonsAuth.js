@@ -1,11 +1,15 @@
 import './ButtonsAuth.css';
 import { Link } from 'react-router-dom';
 
-function ButtonsAuth({textButton, textLink, link, text}) {
+function ButtonsAuth({textButton, textLink, link, text, isValidPassword, isValidEmail, isValidName, setInfoTooltip }) {
+ function resetInfoTooltip() {
+  setInfoTooltip({ onStatus: false, title: "" })
+ }
+ 
   return (
     <section className="buttons">
-      <button type="submit" className="buttons__submit" >{textButton}</button>
-      <p className="buttons__text" >{text}<Link to={link} className="buttons__auth">{textLink}</Link></p>
+      <button type="submit" className={(isValidPassword===true&&isValidEmail===true&&(isValidName===true||isValidName===undefined))?"buttons__submit":"buttons__submit_disable"} disabled={(isValidPassword===true&&isValidEmail===true&&(isValidName===true||isValidName===undefined))?false:true}>{textButton}</button>
+      <p className="buttons__text" >{text}<Link to={link} className="buttons__auth" onClick={resetInfoTooltip}>{textLink}</Link></p>
     </section>
   );
 }

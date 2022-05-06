@@ -1,6 +1,6 @@
 import moviesApi from '../utils/MoviesApi';
-const BASE_URL = 'https://diplom.nomoredomains.work';
-//const BASE_URL = 'http://localhost:3001';
+const BASE_URL = "https://diplom.nomoredomains.work";
+//const BASE_URL = "http://localhost:3001";
 
 export const signup = ({ name, email, password }) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -32,16 +32,16 @@ export const signin = ({ email, password }) => {
 };
 
 //выход
-// export const signout = () => {
-//   return fetch(`${BASE_URL}/signout`, {
-//     method: 'POST',
-//     credentials: 'include',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//   })
-// };
+export const signout = () => {
+  return fetch(`${BASE_URL}/signout`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  })
+};
 
 export const checkToken = token => {
   return fetch(`${BASE_URL}/users/me`, {

@@ -2,3 +2,45 @@
   display: flex;
   flex-direction: column;
 }
+
+.movies_error_active {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 12px;
+  color: red;
+  margin: 0 70px 0;
+  padding: 22px 0 70px;
+  text-align: center;
+}
+.movies_error_disable {
+  display: none;
+}
+
+.movies_list_disable {
+  display: none;
+}
+
+.elements__button {
+  border: 1px solid #E8E8E8;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  background-color: #fff;
+  width: 320px;
+  height: 36px;
+  margin: 50px auto 80px;
+  padding: 0;
+}
+
+.elements__button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.elements__button_disabled {
+  visibility: hidden;
+}

@@ -94,9 +94,6 @@ function App() {
 
   //функция создания списка карточек
   function moviesList(arrayMovies) {
-    console.log("вызвалась функция moviesList")
-    console.log(calcMovies)
-    console.log(arrayMovies)
     return arrayMovies.slice(0, calcMovies);
   };
 
@@ -143,7 +140,6 @@ function App() {
     if (localStorage.getItem('movies')) {
       let moviesFilterArray = handleMowiesFilterByWordAndChekbox(localStorageMovies, localStorageWord, localStorageCheckbox);
       (calcMovies < moviesFilterArray.length) ? setInactiveButtonMore(true) : setInactiveButtonMore(false);
-      console.log(calcMovies)
       setMoviesFiltered(moviesList(moviesFilterArray));
       setMoviesFilteredByWordAndChekbox(moviesFilterArray)
     } else {
@@ -153,7 +149,6 @@ function App() {
 
   const handleSearchMovies = (word, checkbox) => {
     handleMoviesCalc();
-    console.log(calcMovies)
     setOnPreloader(true);
     if (!word) {
       return setInvalidSearch({ onStatus: true, title: "Нужно ввести ключевое слово!" })
@@ -226,7 +221,6 @@ function App() {
 
   //логин
   const handleInfoTooltipSubmitLogin = (data) => {
-    console.log("вызов функции")
     if (!data.email || !data.password) {
       return setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
     }

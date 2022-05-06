@@ -25,8 +25,6 @@ function FormAuth({ submit, infoTooltip, textButton, textLink, link, text, child
     setValuesPassword(password)
     // Пароль должен содержать не менее 6 знаков,
     // включая строчные и прописные латинские буквы, цифры  и символы
-    console.log((/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9!@#$%^&*a-zA-Z]{6,}/).test(password))
-    console.log(typeof (password))
     const validPassword = (/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9!@#$%^&*a-zA-Z]{6,}/).test(password)
     setIsValidPassword(validPassword);
     setErrorPassword("Неверный формат введенного пароля. Пароль должен содержать не менее 6 знаков, включая строчные и прописные латинские буквы, цифры и символы")

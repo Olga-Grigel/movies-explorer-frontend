@@ -1,9 +1,8 @@
 import moviesApi from '../utils/MoviesApi';
-//const BASE_URL = "https://diplom.nomoredomains.work";
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "https://diplom.nomoredomains.work";
+//const BASE_URL = "http://localhost:3001";
 
 export const signup = ({ name, email, password }) => {
-  console.log("функция запроса работает")
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     credentials: 'include',

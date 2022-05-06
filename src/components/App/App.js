@@ -90,10 +90,13 @@ function App() {
   //запуск подсчета карточек
   React.useEffect(() => {
     handleMoviesCalc();
-  }, [calcMovies])
+  }, [])
 
   //функция создания списка карточек
   function moviesList(arrayMovies) {
+    console.log("вызвалась функция moviesList")
+    console.log(calcMovies)
+    console.log(arrayMovies)
     return arrayMovies.slice(0, calcMovies);
   };
 
@@ -112,18 +115,16 @@ function App() {
   };
 
   //кнопкa Ещё
-  function addMovies() {
+  const addMovies = () => {
     const newCalcMovies = handleMoviesListAddCardsMore()
     const newMoviesFiltered = moviesFilteredByWordAndChekbox.slice(0, newCalcMovies)
     setMoviesFiltered(newMoviesFiltered);
     (newMoviesFiltered.length === moviesFilteredByWordAndChekbox.length) ? setInactiveButtonMore(false) : setInactiveButtonMore(true);
   };
-
   //функции поиска и фильтрация фильмов
   function handleMowiesFilterByWordAndChekbox(moviesArray, word, checkbox) {
     const moviesFilterByWord = moviesArray.filter((m) => (m.nameRU.toLowerCase().includes(word.toLowerCase()) || m.nameEN?.toLowerCase().includes(word.toLowerCase())))
     if (checkbox) {
-
       return moviesFilterByWord.filter((m) => (m.duration < 41))
     } else {
       return moviesFilterByWord
@@ -142,6 +143,7 @@ function App() {
     if (localStorage.getItem('movies')) {
       let moviesFilterArray = handleMowiesFilterByWordAndChekbox(localStorageMovies, localStorageWord, localStorageCheckbox);
       (calcMovies < moviesFilterArray.length) ? setInactiveButtonMore(true) : setInactiveButtonMore(false);
+      console.log(calcMovies)
       setMoviesFiltered(moviesList(moviesFilterArray));
       setMoviesFilteredByWordAndChekbox(moviesFilterArray)
     } else {
@@ -150,6 +152,8 @@ function App() {
   }, [calcMovies])
 
   const handleSearchMovies = (word, checkbox) => {
+    handleMoviesCalc();
+    console.log(calcMovies)
     setOnPreloader(true);
     if (!word) {
       return setInvalidSearch({ onStatus: true, title: "Нужно ввести ключевое слово!" })
@@ -222,6 +226,7 @@ function App() {
 
   //логин
   const handleInfoTooltipSubmitLogin = (data) => {
+    console.log("вызов функции")
     if (!data.email || !data.password) {
       return setInfoTooltip({ onStatus: true, title: "Что-то пошло не так..." })
     }

@@ -71,7 +71,8 @@ class Api {
 }
 
 const api = new Api({
-  url: "https://diplom.nomoredomains.work",
+  //url: "https://diplom.nomoredomains.work",
+  url: "http://localhost:3001",
   headers: {
     'Content-Type': 'application/json'
   }
